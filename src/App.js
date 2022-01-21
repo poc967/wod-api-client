@@ -1,9 +1,10 @@
 import './App.css';
 import styled from 'styled-components';
+import { Routes, Route } from 'react-router-dom';
 
 // components
 import NavigationBar from './components/NavigationBar';
-import Button1 from './components/Button1';
+import Main from './components/Main';
 
 const AppContainer = styled.div`
   width: 100wv;
@@ -17,7 +18,9 @@ function App() {
   return (
     <AppContainer className="App">
       <NavigationBar />
-      <Button1 />
+      <Routes>
+        <Route path="/" element={<Main />} />
+      </Routes>
     </AppContainer>
   );
 }
