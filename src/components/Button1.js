@@ -15,7 +15,11 @@ const Wrapper = styled.button`
 
 class Button1 extends Component {
   render() {
-    return <Wrapper>{this.props.text}</Wrapper>;
+    return (
+      <Wrapper>
+        <Link>{this.props.text}</Link>
+      </Wrapper>
+    );
   }
 }
 
