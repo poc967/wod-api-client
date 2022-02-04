@@ -6,7 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { configureApplicationStore } from './store';
+import { getUser } from './actions/authActions';
 const store = configureApplicationStore();
+
+store.dispatch(getUser);
 
 ReactDOM.render(
   <React.StrictMode>

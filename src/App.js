@@ -1,7 +1,8 @@
 import './App.css';
 import styled from 'styled-components';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { getUser } from './actions/authActions';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 // components
 import NavigationBar from './components/NavigationBar';
@@ -28,4 +29,12 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+App.propTypes = {
+  auth: PropTypes.object,
+};
+
+export default connect(mapStateToProps, null)(App);
