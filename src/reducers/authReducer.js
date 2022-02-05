@@ -22,10 +22,10 @@ function authReducer(state = initialState, action) {
         is_authenticated: true,
         fetching: false,
         user: {
-          id: action.payload.id,
-          firstName: action.payload.firstName,
-          lastName: action.payload.lastName,
-          email: action.payload.email,
+          id: action.payload.data.id,
+          firstName: action.payload.data.first_name,
+          lastName: action.payload.data.last_name,
+          email: action.payload.data.email,
         },
       };
     case USER_LOADING:

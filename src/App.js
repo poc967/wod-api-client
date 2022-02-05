@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 // components
 import NavigationBar from './components/NavigationBar';
@@ -17,16 +18,27 @@ const AppContainer = styled.div`
   background-color: white;
 `;
 
-function App() {
-  return (
-    <AppContainer className="App">
-      <NavigationBar />
-      <Routes>
-        <Route path="/" element={true ? <Main /> : <Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </AppContainer>
-  );
+class App extends Component {
+  render() {
+    return (
+      <AppContainer className="App">
+        <NavigationBar />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              this.props.auth.is_authenticated ? (
+                <Main />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </AppContainer>
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({
