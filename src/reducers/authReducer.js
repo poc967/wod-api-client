@@ -2,6 +2,7 @@ import {
   USER_LOGIN_SUCCESS,
   USER_LOADING,
   USER_LOGIN_FAIL,
+  USER_LOGOUT,
 } from '../constants/actions';
 
 const initialState = {
@@ -34,6 +35,7 @@ function authReducer(state = initialState, action) {
         fetching: true,
       };
     case USER_LOGIN_FAIL:
+    case USER_LOGOUT:
       return {
         is_authenticated: false,
         fetching: false,

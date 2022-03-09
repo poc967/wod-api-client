@@ -9,6 +9,7 @@ import React, { Component } from 'react';
 import NavigationBar from './components/NavigationBar';
 import Main from './components/Main';
 import Login from './components/Login';
+import CreateWorkOut from './components/CreateWorkOut';
 
 const AppContainer = styled.div`
   width: 100wv;
@@ -24,16 +25,8 @@ class App extends Component {
       <AppContainer className="App">
         <NavigationBar />
         <Routes>
-          <Route
-            path="/"
-            element={
-              this.props.auth.is_authenticated ? (
-                <Main />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
+          <Route exact path="/" element={<Main />} />
+          <Route path="/workout" element={<CreateWorkOut />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </AppContainer>

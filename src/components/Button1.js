@@ -17,7 +17,7 @@ class Button1 extends Component {
   render() {
     return (
       <Wrapper>
-        <Link to="whiteboard">{this.props.text}</Link>
+        <Link to="workout">{this.props.text}</Link>
       </Wrapper>
     );
   }

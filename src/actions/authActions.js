@@ -2,6 +2,7 @@ import {
   USER_LOADING,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAIL,
+  USER_LOGOUT,
 } from '../constants/actions';
 import axios from 'axios';
 
@@ -55,6 +56,23 @@ export const authenticateUser = (username, password) => async (dispatch) => {
     dispatch({
       type: USER_LOGIN_FAIL,
     });
+    throw new Error(error);
+  }
+};
+
+export const logoutUser = async (dispatch) => {
+  try {
+    let response = await axios({
+      method: 'GET',
+      url: 'http://localhost:5000/api/users/logout',
+    });
+
+    if (response.status === 200) {
+      dispatch({
+        type: USER_LOGOUT,
+      });
+    }
+  } catch (error) {
     throw new Error(error);
   }
 };
