@@ -40,15 +40,15 @@ class CreateWorkOut extends Component {
       sets,
       notes,
     };
-    this.state.movements.push(newWorkoutMovement);
     await this.setState({
-      movements: this.state.movements,
+      movements: [...this.state.movements, newWorkoutMovement],
       movement: null,
       weight: null,
       repititions: null,
       sets: null,
       notes: null,
     });
+    console.log(this.state);
   };
 
   toggleComponentModalOpen = () => {
@@ -72,6 +72,12 @@ class CreateWorkOut extends Component {
             toggleComponentModalOpen={this.toggleComponentModalOpen}
             handleChange={this.handleChange}
             handleStageMovement={this.handleStageMovement}
+            movements={this.state.movements}
+            movement={this.state.movement}
+            weight={this.state.weight}
+            repititions={this.state.repititions}
+            sets={this.state.sets}
+            notes={this.state.notes}
           />
         </Form>
       </Wrapper>

@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Modal, Button, Form, Item, Input, Select } from 'antd';
+import { FormGroup, Label, InputGroup } from '@blueprintjs/core';
 
 const NewWorkOutComponentModal = (props) => {
+  console.log(props);
   return (
     <Modal
       title="New Component"
@@ -28,12 +30,16 @@ const NewWorkOutComponentModal = (props) => {
         </Form.Item>
         <div>
           <h2>Add movements</h2>
+          {props.movements.map((movement, index) => (
+            <div>{movement.movement}</div>
+          ))}
           <Form.Item name="movement">
             <Input
               placeholder="Movement"
               size="large"
               name="movement"
               onChange={props.handleChange}
+              value={props.movement}
             />
           </Form.Item>
           <Form.Item name="weight">
@@ -42,6 +48,7 @@ const NewWorkOutComponentModal = (props) => {
               size="large"
               name="weight"
               onChange={props.handleChange}
+              value={props.weight}
             />
           </Form.Item>
           <Form.Item name="repititions">
@@ -50,6 +57,7 @@ const NewWorkOutComponentModal = (props) => {
               size="large"
               name="repititions"
               onChange={props.handleChange}
+              value={props.repititions}
             />
           </Form.Item>
           <Form.Item name="sets">
@@ -58,6 +66,7 @@ const NewWorkOutComponentModal = (props) => {
               size="large"
               name="sets"
               onChange={props.handleChange}
+              value={props.sets}
             />
           </Form.Item>
           <Form.Item name="notes">
@@ -66,6 +75,7 @@ const NewWorkOutComponentModal = (props) => {
               size="large"
               name="notes"
               onChange={props.handleChange}
+              value={props.notes}
             />
           </Form.Item>
           <Button onClick={props.handleStageMovement}>Add</Button>
