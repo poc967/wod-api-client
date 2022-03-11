@@ -4,7 +4,6 @@ import { Modal, Button, Form, Item, Input, Select } from 'antd';
 import { FormGroup, Label, InputGroup } from '@blueprintjs/core';
 
 const NewWorkOutComponentModal = (props) => {
-  console.log(props);
   return (
     <Modal
       title="New Component"

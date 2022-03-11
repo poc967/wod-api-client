@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Form, Input, Button, Checkbox } from 'antd';
+import { FormGroup } from '@blueprintjs/core';
 import NewWorkOutComponentModal from './NewWorkOutComponentModal';
 
 const Wrapper = styled.div`
@@ -9,6 +10,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+const workOutStyleOptions = ['AMRAP', 'For Time', 'EMOM', 'Other'];
 
 class CreateWorkOut extends Component {
   state = {
@@ -61,12 +64,36 @@ class CreateWorkOut extends Component {
     return (
       <Wrapper>
         <h1>New Workout</h1>
-        <Form>
-          <Form.Item label="Title" name="work_out_title">
-            <Input size="large" name="work_out_title" />
-          </Form.Item>
+        <FormGroup>
+          <input
+            className="bp3-input bp3-large bp3-fill"
+            type="text"
+            name="work_out_title"
+            placeholder="Workout Title"
+          />
           <h2>Workout Components</h2>
-          <Button onClick={this.toggleComponentModalOpen}>New Component</Button>
+          <input
+            className="bp3-input bp3-large bp3-fill"
+            placeholder="Description"
+            type="text"
+            name="description"
+          />
+          <div class="bp3-html-select bp3-fill bp3-large">
+            <select>
+              <option value="">Select...</option>
+              {workOutStyleOptions.map((option, index) => (
+                <option value={option}>{option}</option>
+              ))}
+            </select>
+            <span class="bp3-icon bp3-icon-double-caret-vertical"></span>
+          </div>
+          <input
+            className="bp3-input bp3-fill bp3-large"
+            placeholder="Rep Scheme"
+            size="large"
+            name="rep_scheme"
+          />
+          {/* <Button onClick={this.toggleComponentModalOpen}>New Component</Button>
           <NewWorkOutComponentModal
             componentModalOpen={this.state.componentModalOpen}
             toggleComponentModalOpen={this.toggleComponentModalOpen}
@@ -78,8 +105,8 @@ class CreateWorkOut extends Component {
             repititions={this.state.repititions}
             sets={this.state.sets}
             notes={this.state.notes}
-          />
-        </Form>
+          /> */}
+        </FormGroup>
       </Wrapper>
     );
   }
