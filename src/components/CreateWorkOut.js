@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Form, Input, Button, Checkbox } from 'antd';
-import { FormGroup } from '@blueprintjs/core';
+import { FormGroup, Card, Button, Dialog, Text, H4 } from '@blueprintjs/core';
 import NewWorkOutComponentModal from './NewWorkOutComponentModal';
 
 const Wrapper = styled.div`
@@ -18,12 +17,21 @@ class CreateWorkOut extends Component {
     componentModalOpen: false,
     workoutComponents: [],
     movements: [],
+    timeCap: null,
+    intervalTimeDomain: null,
+    rounds: null,
+    repScheme: null,
     wodTitle: null,
-    movement: null,
-    weight: null,
-    repititions: null,
-    sets: null,
+    newMovement: {
+      movement: null,
+      weight: null,
+      repititions: null,
+      sets: null,
+      notes: null,
+    },
     notes: null,
+    workoutStyle: null,
+    description: null,
   };
 
   handleChange = async (e) => {
@@ -66,33 +74,77 @@ class CreateWorkOut extends Component {
         <h1>New Workout</h1>
         <FormGroup>
           <input
-            className="bp3-input bp3-large bp3-fill"
+            className="bp3-input bp3-fill"
             type="text"
             name="work_out_title"
             placeholder="Workout Title"
           />
           <h2>Workout Components</h2>
-          <input
-            className="bp3-input bp3-large bp3-fill"
-            placeholder="Description"
-            type="text"
-            name="description"
-          />
-          <div class="bp3-html-select bp3-fill bp3-large">
-            <select>
-              <option value="">Select...</option>
-              {workOutStyleOptions.map((option, index) => (
-                <option value={option}>{option}</option>
-              ))}
-            </select>
-            <span class="bp3-icon bp3-icon-double-caret-vertical"></span>
+          <div>
+            <Button text="Show overlay" onClick="" />
+            <Dialog title="Add Component" isOpen={true}>
+              <input
+                className="input-spacing bp3-input"
+                placeholder="Description"
+                size="large"
+                name="description"
+              />
+              <div className="input-spacing bp3-html-select">
+                <select>
+                  <option value="">Select...</option>
+                  {workOutStyleOptions.map((option, index) => (
+                    <option value={option}>{option}</option>
+                  ))}
+                </select>
+                <span className="bp3-icon bp3-icon-double-caret-vertical"></span>
+              </div>
+              <input
+                className="input-spacing bp3-input"
+                placeholder="Rep Scheme"
+                size="large"
+                name="repScheme"
+              />
+              <input
+                className="input-spacing bp3-input"
+                placeholder="Time Cap"
+                size="large"
+                name="timeCap"
+              />
+              <input
+                className="input-spacing bp3-input"
+                placeholder="Interval Time Domain"
+                size="large"
+                name="intervalTimeDomain"
+              />
+              <input
+                className="input-spacing bp3-input"
+                placeholder="Notes"
+                size="large"
+                name="notes"
+              />
+              <H4>Movements</H4>
+              <table className="bp3-html-table bp3-html-table-bordered bp3-html-table-striped bp3-html-table-condensed">
+                <thead>
+                  <tr>
+                    <th>Movement</th>
+                    <th>Weight</th>
+                    <th>Reps</th>
+                    <th>Sets</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Snatch</td>
+                    <td>78%</td>
+                    <td>10</td>
+                    <td>2</td>
+                    <td>No misses</td>
+                  </tr>
+                </tbody>
+              </table>
+            </Dialog>
           </div>
-          <input
-            className="bp3-input bp3-fill bp3-large"
-            placeholder="Rep Scheme"
-            size="large"
-            name="rep_scheme"
-          />
           {/* <Button onClick={this.toggleComponentModalOpen}>New Component</Button>
           <NewWorkOutComponentModal
             componentModalOpen={this.state.componentModalOpen}
