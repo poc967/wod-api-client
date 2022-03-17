@@ -80,9 +80,8 @@ class CreateWorkOut extends Component {
             placeholder="Workout Title"
           />
           <h2>Workout Components</h2>
-          <div>
-            <Button text="Show overlay" onClick="" />
-            <Dialog title="Add Component" isOpen={true}>
+          <div className="flex-row">
+            <Card className="custom-bp3-card flex-column">
               <input
                 className="input-spacing bp3-input"
                 placeholder="Description"
@@ -143,7 +142,10 @@ class CreateWorkOut extends Component {
                   </tr>
                 </tbody>
               </table>
-            </Dialog>
+            </Card>
+            <Card>
+              <H4>Whiteboard</H4>
+            </Card>
           </div>
           {/* <Button onClick={this.toggleComponentModalOpen}>New Component</Button>
           <NewWorkOutComponentModal
