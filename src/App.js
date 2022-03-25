@@ -10,6 +10,7 @@ import NavigationBar from './components/NavigationBar';
 import Main from './components/Main';
 import Login from './components/Login';
 import CreateWorkOut from './components/CreateWorkOut';
+import PrivateRoute from './components/PrivateRoute';
 
 const AppContainer = styled.div`
   width: 100wv;
@@ -25,8 +26,23 @@ class App extends Component {
       <AppContainer className="App">
         <NavigationBar />
         <Routes>
-          <Route exact path="/" element={<Main />} />
-          <Route path="/workout" element={<CreateWorkOut />} />
+          <Route
+            exact
+            path="/"
+            element={
+              <PrivateRoute isAuthenticated={this.props.auth.is_authenticated}>
+                <Main />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/workout"
+            element={
+              <PrivateRoute isAuthenticated={this.props.auth.is_authenticated}>
+                <CreateWorkOut />
+              </PrivateRoute>
+            }
+          />
           <Route path="/login" element={<Login />} />
         </Routes>
       </AppContainer>
