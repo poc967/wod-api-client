@@ -1,27 +1,53 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Button } from 'antd';
+import {
+  Navbar,
+  NavbarGroup,
+  NavbarHeading,
+  NavbarDivider,
+  Alignment,
+  Button,
+  Menu,
+  MenuDivider,
+  MenuItem,
+  Popover,
+} from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions/authActions';
 import PropTypes from 'prop-types';
 
-const Wrapper = styled.div`
-  width: 100vw;
-  height: 9vh;
-  background-color: steelblue;
-`;
 class NavigationBar extends Component {
   render() {
+    const MenuFragment = (
+      <Menu>
+        <MenuItem
+          text="Logout"
+          icon="log-out"
+          onClick={this.props.logoutUser}
+        />
+      </Menu>
+    );
+
+    const { isAuthenticated, currentUser } = this.props;
+
     return (
-      <Wrapper>
-        <div>
-          {this.props.is_authenticated ? (
-            <div>
-              <Button onClick={this.props.logoutUser}>Logout</Button>
-            </div>
-          ) : null}
-        </div>
-      </Wrapper>
+      <Navbar>
+        <NavbarGroup align={Alignment.LEFT}>
+          <NavbarHeading>WOD Tracker</NavbarHeading>
+          <NavbarDivider />
+          <Button className="bp3-minimal" icon="home" />
+          <Button className="bp3-minimal" icon="document" />
+        </NavbarGroup>
+        {isAuthenticated ? (
+          <NavbarGroup align={Alignment.RIGHT}>
+            <Popover content={MenuFragment}>
+              <Button className="bp3-minimal" icon="user" />
+            </Popover>
+            <NavbarDivider />
+            <NavbarHeading>Welcome, {currentUser.firstName}!</NavbarHeading>
+          </NavbarGroup>
+        ) : null}
+      </Navbar>
     );
   }
 }

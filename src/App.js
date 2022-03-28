@@ -24,7 +24,12 @@ class App extends Component {
   render() {
     return (
       <AppContainer className="App">
-        <NavigationBar />
+        {this.props.auth.is_authenticated ? (
+          <NavigationBar
+            isAuthenticated={this.props.auth.is_authenticated}
+            currentUser={this.props.auth.user}
+          />
+        ) : null}
         <Routes>
           <Route
             exact

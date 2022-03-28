@@ -16,9 +16,7 @@ export const getUser = async (dispatch) => {
       url: 'http://localhost:5000/api/users/current_user',
       method: 'GET',
     });
-    console.log(response.data, response.status);
     if (response.status === 200) {
-      console.log('test');
       dispatch({
         type: USER_LOGIN_SUCCESS,
         payload: response.data,
@@ -60,7 +58,8 @@ export const authenticateUser = (username, password) => async (dispatch) => {
   }
 };
 
-export const logoutUser = async (dispatch) => {
+export const logoutUser = () => async (dispatch) => {
+  dispatch(setUserLoading);
   try {
     let response = await axios({
       method: 'GET',
