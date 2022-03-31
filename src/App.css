@@ -48,7 +48,14 @@
 }
 
 .input-spacing {
-  margin: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.login-form-flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 35vh;
 }
 
 @keyframes App-logo-spin {

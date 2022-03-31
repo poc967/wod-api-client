@@ -1,32 +1,19 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Form, Input, Button, Checkbox } from 'antd';
 import { verifyAuthDataForLogin } from '../helpers/loginHelpers';
 import { authenticateUser } from '../actions/authActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
+import { FormGroup, InputGroup, Button } from '@blueprintjs/core';
 
 const Wrapper = styled.div`
-  width: 85vw;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  width: 50%;
+  height: 100vh;
   margin: 0 auto;
-  padding-top: 3rem;
-  padding-bottom: 1rem;
-`;
-
-const LoginFormWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Title = styled.h1`
-  padding-bottom: 1rem;
-  font-size: 3.5rem;
-  font-weight: 200;
 `;
 class Login extends Component {
   state = {
@@ -62,27 +49,29 @@ class Login extends Component {
     if (this.props.auth.is_authenticated) return <Navigate to="/" />;
     return (
       <Wrapper>
-        <LoginFormWrapper>
-          <Title>Log In</Title>
-          <Form name="basic">
-            <Form.Item label="Username" name="username">
-              <Input
-                size="large"
-                name="username"
-                onChange={this.handleChange}
-              />
-            </Form.Item>
-            <Form.Item label="Password" name="password">
-              <Input
-                size="large"
-                type="password"
-                name="password"
-                onChange={this.handleChange}
-              />
-            </Form.Item>
-            <Button onClick={this.onSubmit}>Submit</Button>
-          </Form>
-        </LoginFormWrapper>
+        <h2 className="bp3-heading">Login</h2>
+        <FormGroup
+          labelFor="text-input"
+          className="login-form-flex"
+          labelInfo="(required)"
+        >
+          <InputGroup
+            id="text-input"
+            placeholder="Username"
+            className="input-spacing"
+            onChange={this.handleChange}
+            name="username"
+          />
+          <InputGroup
+            id="text-input"
+            placeholder="Password"
+            className="input-spacing"
+            onChange={this.handleChange}
+            type="password"
+            name="password"
+          />
+          <Button onClick={this.onSubmit}>Submit</Button>
+        </FormGroup>
       </Wrapper>
     );
   }
