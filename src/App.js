@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import NavigationBar from './components/NavigationBar';
 import Main from './components/Main';
 import Login from './components/Login';
-import CreateWorkOut from './components/CreateWorkOut';
+import CreateWorkOut from './components/CreateWorkOut/CreateWorkOut';
 import PrivateRoute from './components/PrivateRoute';
 
 const AppContainer = styled.div`
