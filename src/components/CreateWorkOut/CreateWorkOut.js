@@ -9,6 +9,7 @@ import {
   Text,
   H4,
   EditableText,
+  TextArea,
 } from '@blueprintjs/core';
 import NewWorkOutComponentModal from '../NewWorkOutComponentModal';
 
@@ -103,6 +104,7 @@ class CreateWorkOut extends Component {
                   icon="plus"
                   onClick={this.toggleNewComponent}
                 />
+                <TextArea className="bp3-fill" growVertically={true} />
               </div>
             </Card>
             <Card className="custom-bp3-card flex-column width-half min-height-half">
