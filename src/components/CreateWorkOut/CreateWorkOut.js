@@ -24,16 +24,18 @@ const Wrapper = styled.div`
 
 const workOutStyleOptions = ['AMRAP', 'For Time', 'EMOM', 'Other'];
 
+let movements = [
+  { movement: 'Snatch', weight: '95#/55#', repititions: '3', notes: 'none' },
+  { movement: 'Wall Ball', weight: '20#/16#' },
+];
+
 class CreateWorkOut extends Component {
   state = {
-    componentModalOpen: false,
     workoutComponents: [],
     movements: [],
-    newWorkOutComponentOpen: false,
     timeCap: null,
     intervalTimeDomain: null,
     rounds: null,
-    repScheme: null,
     wodTitle: null,
     newMovement: {
       movement: null,
@@ -44,7 +46,6 @@ class CreateWorkOut extends Component {
     },
     notes: null,
     workoutStyle: null,
-    description: null,
   };
 
   handleChange = async (e) => {
@@ -103,74 +104,71 @@ class CreateWorkOut extends Component {
                   className="bp3-minimal"
                   icon="plus"
                   onClick={this.toggleNewComponent}
-                />
-                <TextArea className="bp3-fill" growVertically={true} />
+                >
+                  Add Component...
+                </Button>
               </div>
             </Card>
             <Card className="custom-bp3-card flex-column width-half min-height-half">
               {this.state.newWorkOutComponent ? (
-                <>
-                  <input
-                    className="input-spacing bp3-input"
-                    placeholder="Description"
-                    size="large"
-                    name="description"
+                <div>
+                  <TextArea
+                    className="bp3-fill"
+                    growVertically={true}
+                    placeholder="Describe workout (Ex. 10 Rounds For Time 20 Minute Cap)"
                   />
-                  <div className="input-spacing bp3-html-select">
-                    <select>
-                      <option value="">Select...</option>
-                      {workOutStyleOptions.map((option, index) => (
-                        <option value={option}>{option}</option>
-                      ))}
-                    </select>
-                    <span className="bp3-icon bp3-icon-double-caret-vertical"></span>
-                  </div>
-                  <input
-                    className="input-spacing bp3-input"
-                    placeholder="Rep Scheme"
-                    size="large"
-                    name="repScheme"
-                  />
-                  <input
-                    className="input-spacing bp3-input"
-                    placeholder="Time Cap"
-                    size="large"
-                    name="timeCap"
-                  />
-                  <input
-                    className="input-spacing bp3-input"
-                    placeholder="Interval Time Domain"
-                    size="large"
-                    name="intervalTimeDomain"
-                  />
-                  <input
-                    className="input-spacing bp3-input"
-                    placeholder="Notes"
-                    size="large"
-                    name="notes"
-                  />
-                  <H4>Movements</H4>
-                  <table className="bp3-html-table bp3-html-table-bordered bp3-html-table-striped bp3-html-table-condensed">
+                  <H4 className="padding-top">Movements</H4>
+                  <table className="bp3-html-table bp3-html-table-striped bp3-html-table-condensed table-styles">
                     <thead>
                       <tr>
                         <th>Movement</th>
                         <th>Weight</th>
                         <th>Reps</th>
-                        <th>Sets</th>
                         <th>Notes</th>
                       </tr>
                     </thead>
                     <tbody>
+                      {movements.map(
+                        ({ movement, weight, repititions, notes }) => (
+                          <tr>
+                            <td>
+                              <EditableText value={movement}>
+                                {movement}
+                              </EditableText>
+                            </td>
+                            <td>
+                              <EditableText value={weight}>
+                                {weight}
+                              </EditableText>
+                            </td>
+                            <td>
+                              <EditableText value={repititions}>
+                                {repititions}
+                              </EditableText>
+                            </td>
+                            <td>
+                              <EditableText value={notes}>{notes}</EditableText>
+                            </td>
+                          </tr>
+                        )
+                      )}
                       <tr>
-                        <td>Snatch</td>
-                        <td>78%</td>
-                        <td>10</td>
-                        <td>2</td>
-                        <td>No misses</td>
+                        <td>
+                          <EditableText />
+                        </td>
+                        <td>
+                          <EditableText />
+                        </td>
+                        <td>
+                          <EditableText />
+                        </td>
+                        <td>
+                          <EditableText />
+                        </td>
                       </tr>
                     </tbody>
                   </table>
-                </>
+                </div>
               ) : (
                 <>
                   <span>Click + to add a new workout component</span>
