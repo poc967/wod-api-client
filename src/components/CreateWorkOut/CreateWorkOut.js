@@ -44,16 +44,19 @@ class CreateWorkOut extends Component {
       sets: null,
       notes: null,
     },
+    movement: null,
     notes: null,
     workoutStyle: null,
   };
 
-  handleChange = async (e) => {
-    let key = e.target.name;
-    let value = e.target.value;
+  handleChange = async (value, key) => {
     await this.setState({
       [key]: value,
     });
+  };
+
+  handleConfirm = async (e, type) => {
+    console.log(e, type);
   };
 
   toggleNewComponent = async () => {
@@ -79,7 +82,6 @@ class CreateWorkOut extends Component {
       sets: null,
       notes: null,
     });
-    console.log(this.state);
   };
 
   toggleComponentModalOpen = () => {
@@ -154,17 +156,32 @@ class CreateWorkOut extends Component {
                       )}
                       <tr>
                         <td>
-                          <EditableText />
+                          <EditableText
+                            onChange={(e) => this.handleChange(e, 'movement')}
+                          />
                         </td>
-                        <td>
-                          <EditableText />
-                        </td>
-                        <td>
-                          <EditableText />
-                        </td>
-                        <td>
-                          <EditableText />
-                        </td>
+                        {this.state.movement ? (
+                          <>
+                            <td>
+                              <EditableText
+                                value={this.state.weight}
+                                onChange={this.handleChange}
+                              />
+                            </td>
+                            <td>
+                              <EditableText
+                                value={this.state.repititions}
+                                onChange={this.handleChange}
+                              />
+                            </td>
+                            <td>
+                              <EditableText
+                                value={this.state.notes}
+                                onChange={this.handleChange}
+                              />
+                            </td>
+                          </>
+                        ) : null}
                       </tr>
                     </tbody>
                   </table>
