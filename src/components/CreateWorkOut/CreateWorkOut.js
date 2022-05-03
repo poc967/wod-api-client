@@ -10,6 +10,7 @@ import {
   H4,
   EditableText,
   TextArea,
+  Popover,
 } from '@blueprintjs/core';
 import NewWorkOutComponentModal from '../NewWorkOutComponentModal';
 
@@ -24,15 +25,23 @@ const Wrapper = styled.div`
 
 const workOutStyleOptions = ['AMRAP', 'For Time', 'EMOM', 'Other'];
 
-let movements = [
-  { movement: 'Snatch', weight: '95#/55#', repititions: '3', notes: 'none' },
-  { movement: 'Wall Ball', weight: '20#/16#' },
-];
-
 class CreateWorkOut extends Component {
   state = {
     workoutComponents: [],
-    movements: [],
+    movements: [
+      {
+        movement: 'Snatch',
+        weight: '95#/55#',
+        repititions: '3',
+        notes: 'none',
+      },
+      {
+        movement: 'Wall Ball',
+        weight: '20#/16#',
+        repititions: null,
+        notes: null,
+      },
+    ],
     timeCap: null,
     intervalTimeDomain: null,
     rounds: null,
@@ -49,9 +58,11 @@ class CreateWorkOut extends Component {
     workoutStyle: null,
   };
 
-  handleChange = async (value, key) => {
+  handleMovementChange = async (value, index, name) => {
+    let movements = this.state.movements;
+    movements[index][name] = value;
     await this.setState({
-      [key]: value,
+      movements: movements,
     });
   };
 
@@ -120,7 +131,7 @@ class CreateWorkOut extends Component {
                     placeholder="Describe workout (Ex. 10 Rounds For Time 20 Minute Cap)"
                   />
                   <H4 className="padding-top">Movements</H4>
-                  <table className="bp3-html-table bp3-html-table-striped bp3-html-table-condensed table-styles">
+                  <table className="bp3-html-table bp3-html-table-condensed table-styles">
                     <thead>
                       <tr>
                         <th>Movement</th>
@@ -130,58 +141,63 @@ class CreateWorkOut extends Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {movements.map(
-                        ({ movement, weight, repititions, notes }) => (
-                          <tr>
-                            <td>
-                              <EditableText value={movement}>
-                                {movement}
-                              </EditableText>
-                            </td>
-                            <td>
-                              <EditableText value={weight}>
-                                {weight}
-                              </EditableText>
-                            </td>
-                            <td>
-                              <EditableText value={repititions}>
-                                {repititions}
-                              </EditableText>
-                            </td>
-                            <td>
-                              <EditableText value={notes}>{notes}</EditableText>
-                            </td>
-                          </tr>
-                        )
-                      )}
+                      {this.state.movements.map((movement, index) => (
+                        <tr>
+                          <td>
+                            <EditableText
+                              value={movement.movement}
+                              onChange={(e) =>
+                                this.handleMovementChange(e, index, 'movement')
+                              }
+                            >
+                              {movement.movement}
+                            </EditableText>
+                          </td>
+                          <td>
+                            <EditableText
+                              value={movement.weight}
+                              onChange={(e) =>
+                                this.handleMovementChange(e, index, 'weight')
+                              }
+                            >
+                              {movement.weight}
+                            </EditableText>
+                          </td>
+                          <td>
+                            <EditableText
+                              value={movement.repititions}
+                              onChange={(e) =>
+                                this.handleMovementChange(
+                                  e,
+                                  index,
+                                  'repititions'
+                                )
+                              }
+                            >
+                              {movement.repititions}
+                            </EditableText>
+                          </td>
+                          <td>
+                            <EditableText
+                              value={movement.notes}
+                              onChange={(e) =>
+                                this.handleMovementChange(e, index, 'notes')
+                              }
+                            >
+                              {movement.notes}
+                            </EditableText>
+                          </td>
+                        </tr>
+                      ))}
                       <tr>
                         <td>
-                          <EditableText
+                          <input
+                            type="text"
+                            class="bp3-input"
+                            placeholder="Select movement"
                             onChange={(e) => this.handleChange(e, 'movement')}
                           />
                         </td>
-                        {this.state.movement ? (
-                          <>
-                            <td>
-                              <EditableText
-                                value={this.state.weight}
-                                onChange={this.handleChange}
-                              />
-                            </td>
-                            <td>
-                              <EditableText
-                                value={this.state.repititions}
-                                onChange={this.handleChange}
-                              />
-                            </td>
-                            <td>
-                              <EditableText
-                                value={this.state.notes}
-                                onChange={this.handleChange}
-                              />
-                            </td>
-                          </>
-                        ) : null}
                       </tr>
                     </tbody>
                   </table>
