@@ -46,24 +46,30 @@ class CreateWorkOut extends Component {
     intervalTimeDomain: null,
     rounds: null,
     wodTitle: null,
-    newMovement: {
-      movement: null,
-      weight: null,
-      repititions: null,
-      sets: null,
-      notes: null,
-    },
     movement: null,
+    weight: null,
+    repititions: null,
     notes: null,
     workoutStyle: null,
   };
 
-  handleMovementChange = async (value, index, name) => {
-    let movements = this.state.movements;
-    movements[index][name] = value;
-    await this.setState({
-      movements: movements,
-    });
+  handleMovementChange = async (value, index = null, name, type) => {
+    switch (type) {
+      case 'edit_existing_movement':
+        let movements = this.state.movements;
+        movements[index][name] = value;
+        await this.setState({
+          movements: movements,
+        });
+        break;
+      case 'add_new_movement':
+        await this.setState({
+          [name]: value,
+        });
+        break;
+      default:
+        break;
+    }
   };
 
   handleConfirm = async (e, type) => {
@@ -147,7 +153,12 @@ class CreateWorkOut extends Component {
                             <EditableText
                               value={movement.movement}
                               onChange={(e) =>
-                                this.handleMovementChange(e, index, 'movement')
+                                this.handleMovementChange(
+                                  e,
+                                  index,
+                                  'movement',
+                                  'edit_existing_movement'
+                                )
                               }
                             >
                               {movement.movement}
@@ -157,7 +168,12 @@ class CreateWorkOut extends Component {
                             <EditableText
                               value={movement.weight}
                               onChange={(e) =>
-                                this.handleMovementChange(e, index, 'weight')
+                                this.handleMovementChange(
+                                  e,
+                                  index,
+                                  'weight',
+                                  'edit_existing_movement'
+                                )
                               }
                             >
                               {movement.weight}
@@ -170,7 +186,8 @@ class CreateWorkOut extends Component {
                                 this.handleMovementChange(
                                   e,
                                   index,
-                                  'repititions'
+                                  'repititions',
+                                  'edit_existing_movement'
                                 )
                               }
                             >
@@ -181,7 +198,12 @@ class CreateWorkOut extends Component {
                             <EditableText
                               value={movement.notes}
                               onChange={(e) =>
-                                this.handleMovementChange(e, index, 'notes')
+                                this.handleMovementChange(
+                                  e,
+                                  index,
+                                  'notes',
+                                  'edit_existing_movement'
+                                )
                               }
                             >
                               {movement.notes}
@@ -191,11 +213,15 @@ class CreateWorkOut extends Component {
                       ))}
                       <tr>
                         <td>
-                          <input
-                            type="text"
-                            class="bp3-input"
-                            placeholder="Select movement"
-                            onChange={(e) => this.handleChange(e, 'movement')}
+                          <EditableText
+                            onConfirm={(e) =>
+                              this.handleMovementChange(
+                                e,
+                                null,
+                                'movement',
+                                'add_new_movement'
+                              )
+                            }
                           />
                         </td>
                       </tr>
