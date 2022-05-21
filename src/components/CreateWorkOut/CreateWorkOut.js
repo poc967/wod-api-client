@@ -27,51 +27,8 @@ const workOutStyleOptions = ['AMRAP', 'For Time', 'EMOM', 'Other'];
 
 class CreateWorkOut extends Component {
   state = {
-    workoutComponents: [
-      {
-        description: 'AMRAP 15',
-        movements: [
-          {
-            movement: 'Snatch',
-            weight: '95#/55#',
-            repititions: '3',
-            notes: 'none',
-          },
-          {
-            movement: 'Wall Ball',
-            weight: '20#/16#',
-          },
-        ],
-      },
-      {
-        description: 'On a 15 Minute Clock',
-        movements: [
-          {
-            movement: 'Snatch',
-            weight: '95#/55#',
-            repititions: '3',
-            notes: 'No Misses',
-          },
-          {
-            movement: 'Wall Ball',
-            weight: '20#/16#',
-            repititions: '12',
-          },
-        ],
-      },
-    ],
-    movements: [
-      {
-        movement: 'Snatch',
-        weight: '95#/55#',
-        repititions: '3',
-        notes: 'none',
-      },
-      {
-        movement: 'Wall Ball',
-        weight: '20#/16#',
-      },
-    ],
+    workoutComponents: [],
+    movements: [],
     search: null,
     timeCap: null,
     intervalTimeDomain: null,
@@ -82,6 +39,17 @@ class CreateWorkOut extends Component {
     repititions: null,
     notes: null,
     workoutStyle: null,
+    description: null,
+  };
+
+  handleAddComponent = async () => {
+    let newComponent = {
+      description: this.state.description,
+      movements: this.state.movements,
+    };
+    await this.setState({
+      workoutComponents: [...this.state.workoutComponents, newComponent],
+    });
   };
 
   handleMovementChange = async (value, index = null, name, type) => {
@@ -97,6 +65,11 @@ class CreateWorkOut extends Component {
       case 'add_new_movement':
         await this.setState({
           [name]: value,
+        });
+        break;
+      case 'addDescription':
+        await this.setState({
+          [name]: value.target.value,
         });
         break;
       default:
@@ -152,12 +125,12 @@ class CreateWorkOut extends Component {
               </div>
               <div className="align-left">
                 {this.state.workoutComponents.map((component) => (
-                  <div>
-                    <span>{component.description}</span>
+                  <div className="padding-1-rem">
+                    <span className="bolding">{component.description}</span>
                     {component.movements.map((movement) => (
                       <div>
-                        {movement.repititions} {movement.movement} (
-                        {movement.weight})
+                        {movement.repititions} {movement.movement}
+                        {movement.weight ? <>({movement.weight})</> : null}
                       </div>
                     ))}
                   </div>
@@ -180,7 +153,14 @@ class CreateWorkOut extends Component {
                     className="bp3-fill"
                     growVertically={true}
                     placeholder="Describe workout (Ex. 10 Rounds For Time 20 Minute Cap)"
-                    // onChange={}
+                    onChange={(e) =>
+                      this.handleMovementChange(
+                        e,
+                        null,
+                        'description',
+                        'addDescription'
+                      )
+                    }
                   />
                   <H4 className="padding-top">Movements</H4>
                   <table className="bp3-html-table bp3-html-table-condensed table-styles">
@@ -282,7 +262,10 @@ class CreateWorkOut extends Component {
                       </tr>
                     </tbody>
                   </table>
-                  <Button className="bp3-minimal">
+                  <Button
+                    className="bp3-minimal"
+                    onClick={this.handleAddComponent}
+                  >
                     Click To Add Component
                   </Button>
                 </div>
