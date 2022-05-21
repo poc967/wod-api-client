@@ -27,7 +27,39 @@ const workOutStyleOptions = ['AMRAP', 'For Time', 'EMOM', 'Other'];
 
 class CreateWorkOut extends Component {
   state = {
-    workoutComponents: [],
+    workoutComponents: [
+      {
+        description: 'AMRAP 15',
+        movements: [
+          {
+            movement: 'Snatch',
+            weight: '95#/55#',
+            repititions: '3',
+            notes: 'none',
+          },
+          {
+            movement: 'Wall Ball',
+            weight: '20#/16#',
+          },
+        ],
+      },
+      {
+        description: 'On a 15 Minute Clock',
+        movements: [
+          {
+            movement: 'Snatch',
+            weight: '95#/55#',
+            repititions: '3',
+            notes: 'No Misses',
+          },
+          {
+            movement: 'Wall Ball',
+            weight: '20#/16#',
+            repititions: '12',
+          },
+        ],
+      },
+    ],
     movements: [
       {
         movement: 'Snatch',
@@ -38,10 +70,9 @@ class CreateWorkOut extends Component {
       {
         movement: 'Wall Ball',
         weight: '20#/16#',
-        repititions: null,
-        notes: null,
       },
     ],
+    search: null,
     timeCap: null,
     intervalTimeDomain: null,
     rounds: null,
@@ -54,6 +85,7 @@ class CreateWorkOut extends Component {
   };
 
   handleMovementChange = async (value, index = null, name, type) => {
+    console.log('RUNNING handleMovementChange', value, index, name, type);
     switch (type) {
       case 'edit_existing_movement':
         let movements = this.state.movements;
@@ -119,6 +151,19 @@ class CreateWorkOut extends Component {
                 <EditableText placeholder="Workout Title" maxLength={65} />
               </div>
               <div className="align-left">
+                {this.state.workoutComponents.map((component) => (
+                  <div>
+                    <span>{component.description}</span>
+                    {component.movements.map((movement) => (
+                      <div>
+                        {movement.repititions} {movement.movement} (
+                        {movement.weight})
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+              <div className="align-left">
                 <Button
                   className="bp3-minimal"
                   icon="plus"
@@ -135,6 +180,7 @@ class CreateWorkOut extends Component {
                     className="bp3-fill"
                     growVertically={true}
                     placeholder="Describe workout (Ex. 10 Rounds For Time 20 Minute Cap)"
+                    // onChange={}
                   />
                   <H4 className="padding-top">Movements</H4>
                   <table className="bp3-html-table bp3-html-table-condensed table-styles">
@@ -214,7 +260,7 @@ class CreateWorkOut extends Component {
                       <tr>
                         <td>
                           <EditableText
-                            onConfirm={(e) =>
+                            onChange={(e) =>
                               this.handleMovementChange(
                                 e,
                                 null,
@@ -222,11 +268,23 @@ class CreateWorkOut extends Component {
                                 'add_new_movement'
                               )
                             }
+                            value={this.state.movement}
+                            onConfirm={(value) => {
+                              let movement = Object.create({});
+                              movement.movement = value;
+                              this.setState({
+                                movements: [...this.state.movements, movement],
+                                movement: null,
+                              });
+                            }}
                           />
                         </td>
                       </tr>
                     </tbody>
                   </table>
+                  <Button className="bp3-minimal">
+                    Click To Add Component
+                  </Button>
                 </div>
               ) : (
                 <>
@@ -235,19 +293,6 @@ class CreateWorkOut extends Component {
               )}
             </Card>
           </div>
-          {/* <Button onClick={this.toggleComponentModalOpen}>New Component</Button>
-          <NewWorkOutComponentModal
-            componentModalOpen={this.state.componentModalOpen}
-            toggleComponentModalOpen={this.toggleComponentModalOpen}
-            handleChange={this.handleChange}
-            handleStageMovement={this.handleStageMovement}
-            movements={this.state.movements}
-            movement={this.state.movement}
-            weight={this.state.weight}
-            repititions={this.state.repititions}
-            sets={this.state.sets}
-            notes={this.state.notes}
-          /> */}
         </FormGroup>
       </Wrapper>
     );
