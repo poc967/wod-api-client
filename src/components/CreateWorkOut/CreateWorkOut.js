@@ -22,9 +22,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   min-height: 100%;
 `;
-
-const workOutStyleOptions = ['AMRAP', 'For Time', 'EMOM', 'Other'];
-
 class CreateWorkOut extends Component {
   state = {
     workoutComponents: [],
@@ -37,9 +34,10 @@ class CreateWorkOut extends Component {
     movement: null,
     weight: null,
     repititions: null,
-    notes: null,
+    notes: '',
     workoutStyle: null,
-    description: null,
+    description: '',
+    newWorkOutComponent: false,
   };
 
   handleAddComponent = async () => {
@@ -49,11 +47,13 @@ class CreateWorkOut extends Component {
     };
     await this.setState({
       workoutComponents: [...this.state.workoutComponents, newComponent],
+      movements: [],
+      description: '',
     });
+    await this.toggleNewComponent();
   };
 
   handleMovementChange = async (value, index = null, name, type) => {
-    console.log('RUNNING handleMovementChange', value, index, name, type);
     switch (type) {
       case 'edit_existing_movement':
         let movements = this.state.movements;
@@ -77,38 +77,9 @@ class CreateWorkOut extends Component {
     }
   };
 
-  handleConfirm = async (e, type) => {
-    console.log(e, type);
-  };
-
   toggleNewComponent = async () => {
     await this.setState({
-      newWorkOutComponent: true,
-    });
-  };
-
-  handleStageMovement = async () => {
-    const { movement, weight, repititions, sets, notes } = this.state;
-    let newWorkoutMovement = {
-      movement,
-      weight,
-      repititions,
-      sets,
-      notes,
-    };
-    await this.setState({
-      movements: [...this.state.movements, newWorkoutMovement],
-      movement: null,
-      weight: null,
-      repititions: null,
-      sets: null,
-      notes: null,
-    });
-  };
-
-  toggleComponentModalOpen = () => {
-    this.setState({
-      componentModalOpen: !this.state.componentModalOpen,
+      newWorkOutComponent: !this.state.newWorkOutComponent,
     });
   };
 
@@ -119,31 +90,38 @@ class CreateWorkOut extends Component {
         <FormGroup>
           <div className="flex-row">
             <Card className="margin-right width-half">
-              <H4>Whiteboard</H4>
-              <div>
-                <EditableText placeholder="Workout Title" maxLength={65} />
-              </div>
-              <div className="align-left">
-                {this.state.workoutComponents.map((component) => (
-                  <div className="padding-1-rem">
-                    <span className="bolding">{component.description}</span>
-                    {component.movements.map((movement) => (
-                      <div>
-                        {movement.repititions} {movement.movement}
-                        {movement.weight ? <>({movement.weight})</> : null}
+              <div className="content-top-bottom-button">
+                <div>
+                  <H4>Whiteboard</H4>
+                  <div>
+                    <EditableText placeholder="Workout Title" maxLength={65} />
+                  </div>
+                  <div className="align-left">
+                    {this.state.workoutComponents.map((component) => (
+                      <div className="padding-1-rem">
+                        <span className="bolding">{component.description}</span>
+                        {component.movements.map((movement) => (
+                          <div className="normal-text">
+                            {movement.repititions} {movement.movement}
+                            {movement.weight ? <>({movement.weight})</> : null}
+                          </div>
+                        ))}
                       </div>
                     ))}
                   </div>
-                ))}
-              </div>
-              <div className="align-left">
-                <Button
-                  className="bp3-minimal"
-                  icon="plus"
-                  onClick={this.toggleNewComponent}
-                >
-                  Add Component...
-                </Button>
+                  <div className="align-left">
+                    <Button
+                      className="bp3-minimal"
+                      icon="plus"
+                      onClick={this.toggleNewComponent}
+                    >
+                      Add Component...
+                    </Button>
+                  </div>
+                </div>
+                <div>
+                  <Button>Submit</Button>
+                </div>
               </div>
             </Card>
             <Card className="custom-bp3-card flex-column width-half min-height-half">
@@ -161,6 +139,7 @@ class CreateWorkOut extends Component {
                         'addDescription'
                       )
                     }
+                    value={this.state.description}
                   />
                   <H4 className="padding-top">Movements</H4>
                   <table className="bp3-html-table bp3-html-table-condensed table-styles">
