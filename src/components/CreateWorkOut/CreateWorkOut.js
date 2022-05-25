@@ -12,7 +12,6 @@ import {
   TextArea,
   Popover,
 } from '@blueprintjs/core';
-import NewWorkOutComponentModal from '../NewWorkOutComponentModal';
 
 const Wrapper = styled.div`
   width: 90%;
@@ -26,16 +25,11 @@ class CreateWorkOut extends Component {
   state = {
     workoutComponents: [],
     movements: [],
-    search: null,
-    timeCap: null,
-    intervalTimeDomain: null,
-    rounds: null,
     wodTitle: null,
     movement: null,
     weight: null,
     repititions: null,
     notes: '',
-    workoutStyle: null,
     description: '',
     newWorkOutComponent: false,
   };
@@ -68,6 +62,7 @@ class CreateWorkOut extends Component {
         });
         break;
       case 'addDescription':
+      case 'addNotes':
         await this.setState({
           [name]: value.target.value,
         });
@@ -241,6 +236,15 @@ class CreateWorkOut extends Component {
                       </tr>
                     </tbody>
                   </table>
+                  <TextArea
+                    className="bp3-fill"
+                    growVertically={true}
+                    placeholder="Notes..."
+                    onChange={(e) =>
+                      this.handleMovementChange(e, null, 'notes', 'addNotes')
+                    }
+                    value={this.state.notes}
+                  />
                   <Button
                     className="bp3-minimal"
                     onClick={this.handleAddComponent}
