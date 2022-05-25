@@ -10,8 +10,8 @@ import {
   H4,
   EditableText,
   TextArea,
+  Popover,
 } from '@blueprintjs/core';
-import NewWorkOutComponentModal from '../NewWorkOutComponentModal';
 
 const Wrapper = styled.div`
   width: 90%;
@@ -21,69 +21,60 @@ const Wrapper = styled.div`
   flex-direction: column;
   min-height: 100%;
 `;
-
-const workOutStyleOptions = ['AMRAP', 'For Time', 'EMOM', 'Other'];
-
 class CreateWorkOut extends Component {
   state = {
-    componentModalOpen: false,
     workoutComponents: [],
     movements: [],
-    newWorkOutComponentOpen: false,
-    timeCap: null,
-    intervalTimeDomain: null,
-    rounds: null,
-    repScheme: null,
     wodTitle: null,
-    newMovement: {
-      movement: null,
-      weight: null,
-      repititions: null,
-      sets: null,
-      notes: null,
-    },
-    notes: null,
-    workoutStyle: null,
-    description: null,
+    movement: null,
+    weight: null,
+    repititions: null,
+    notes: '',
+    description: '',
+    newWorkOutComponent: false,
   };
 
-  handleChange = async (e) => {
-    let key = e.target.name;
-    let value = e.target.value;
+  handleAddComponent = async () => {
+    let newComponent = {
+      description: this.state.description,
+      movements: this.state.movements,
+    };
     await this.setState({
-      [key]: value,
+      workoutComponents: [...this.state.workoutComponents, newComponent],
+      movements: [],
+      description: '',
     });
+    await this.toggleNewComponent();
+  };
+
+  handleMovementChange = async (value, index = null, name, type) => {
+    switch (type) {
+      case 'edit_existing_movement':
+        let movements = this.state.movements;
+        movements[index][name] = value;
+        await this.setState({
+          movements: movements,
+        });
+        break;
+      case 'add_new_movement':
+        await this.setState({
+          [name]: value,
+        });
+        break;
+      case 'addDescription':
+      case 'addNotes':
+        await this.setState({
+          [name]: value.target.value,
+        });
+        break;
+      default:
+        break;
+    }
   };
 
   toggleNewComponent = async () => {
     await this.setState({
-      newWorkOutComponent: true,
-    });
-  };
-
-  handleStageMovement = async () => {
-    const { movement, weight, repititions, sets, notes } = this.state;
-    let newWorkoutMovement = {
-      movement,
-      weight,
-      repititions,
-      sets,
-      notes,
-    };
-    await this.setState({
-      movements: [...this.state.movements, newWorkoutMovement],
-      movement: null,
-      weight: null,
-      repititions: null,
-      sets: null,
-      notes: null,
-    });
-    console.log(this.state);
-  };
-
-  toggleComponentModalOpen = () => {
-    this.setState({
-      componentModalOpen: !this.state.componentModalOpen,
+      newWorkOutComponent: !this.state.newWorkOutComponent,
     });
   };
 
@@ -94,83 +85,173 @@ class CreateWorkOut extends Component {
         <FormGroup>
           <div className="flex-row">
             <Card className="margin-right width-half">
-              <H4>Whiteboard</H4>
-              <div>
-                <EditableText placeholder="Workout Title" maxLength={65} />
-              </div>
-              <div className="align-left">
-                <Button
-                  className="bp3-minimal"
-                  icon="plus"
-                  onClick={this.toggleNewComponent}
-                />
-                <TextArea className="bp3-fill" growVertically={true} />
+              <div className="content-top-bottom-button">
+                <div>
+                  <H4>Whiteboard</H4>
+                  <div>
+                    <EditableText placeholder="Workout Title" maxLength={65} />
+                  </div>
+                  <div className="align-left">
+                    {this.state.workoutComponents.map((component) => (
+                      <div className="padding-1-rem">
+                        <span className="bolding">{component.description}</span>
+                        {component.movements.map((movement) => (
+                          <div className="normal-text">
+                            {movement.repititions} {movement.movement}
+                            {movement.weight ? <>({movement.weight})</> : null}
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="align-left">
+                    <Button
+                      className="bp3-minimal"
+                      icon="plus"
+                      onClick={this.toggleNewComponent}
+                    >
+                      Add Component...
+                    </Button>
+                  </div>
+                </div>
+                <div>
+                  <Button>Submit</Button>
+                </div>
               </div>
             </Card>
             <Card className="custom-bp3-card flex-column width-half min-height-half">
               {this.state.newWorkOutComponent ? (
-                <>
-                  <input
-                    className="input-spacing bp3-input"
-                    placeholder="Description"
-                    size="large"
-                    name="description"
+                <div>
+                  <TextArea
+                    className="bp3-fill"
+                    growVertically={true}
+                    placeholder="Describe workout (Ex. 10 Rounds For Time 20 Minute Cap)"
+                    onChange={(e) =>
+                      this.handleMovementChange(
+                        e,
+                        null,
+                        'description',
+                        'addDescription'
+                      )
+                    }
+                    value={this.state.description}
                   />
-                  <div className="input-spacing bp3-html-select">
-                    <select>
-                      <option value="">Select...</option>
-                      {workOutStyleOptions.map((option, index) => (
-                        <option value={option}>{option}</option>
-                      ))}
-                    </select>
-                    <span className="bp3-icon bp3-icon-double-caret-vertical"></span>
-                  </div>
-                  <input
-                    className="input-spacing bp3-input"
-                    placeholder="Rep Scheme"
-                    size="large"
-                    name="repScheme"
-                  />
-                  <input
-                    className="input-spacing bp3-input"
-                    placeholder="Time Cap"
-                    size="large"
-                    name="timeCap"
-                  />
-                  <input
-                    className="input-spacing bp3-input"
-                    placeholder="Interval Time Domain"
-                    size="large"
-                    name="intervalTimeDomain"
-                  />
-                  <input
-                    className="input-spacing bp3-input"
-                    placeholder="Notes"
-                    size="large"
-                    name="notes"
-                  />
-                  <H4>Movements</H4>
-                  <table className="bp3-html-table bp3-html-table-bordered bp3-html-table-striped bp3-html-table-condensed">
+                  <H4 className="padding-top">Movements</H4>
+                  <table className="bp3-html-table bp3-html-table-condensed table-styles">
                     <thead>
                       <tr>
                         <th>Movement</th>
                         <th>Weight</th>
                         <th>Reps</th>
-                        <th>Sets</th>
                         <th>Notes</th>
                       </tr>
                     </thead>
                     <tbody>
+                      {this.state.movements.map((movement, index) => (
+                        <tr>
+                          <td>
+                            <EditableText
+                              value={movement.movement}
+                              onChange={(e) =>
+                                this.handleMovementChange(
+                                  e,
+                                  index,
+                                  'movement',
+                                  'edit_existing_movement'
+                                )
+                              }
+                            >
+                              {movement.movement}
+                            </EditableText>
+                          </td>
+                          <td>
+                            <EditableText
+                              value={movement.weight}
+                              onChange={(e) =>
+                                this.handleMovementChange(
+                                  e,
+                                  index,
+                                  'weight',
+                                  'edit_existing_movement'
+                                )
+                              }
+                            >
+                              {movement.weight}
+                            </EditableText>
+                          </td>
+                          <td>
+                            <EditableText
+                              value={movement.repititions}
+                              onChange={(e) =>
+                                this.handleMovementChange(
+                                  e,
+                                  index,
+                                  'repititions',
+                                  'edit_existing_movement'
+                                )
+                              }
+                            >
+                              {movement.repititions}
+                            </EditableText>
+                          </td>
+                          <td>
+                            <EditableText
+                              value={movement.notes}
+                              onChange={(e) =>
+                                this.handleMovementChange(
+                                  e,
+                                  index,
+                                  'notes',
+                                  'edit_existing_movement'
+                                )
+                              }
+                            >
+                              {movement.notes}
+                            </EditableText>
+                          </td>
+                        </tr>
+                      ))}
                       <tr>
-                        <td>Snatch</td>
-                        <td>78%</td>
-                        <td>10</td>
-                        <td>2</td>
-                        <td>No misses</td>
+                        <td>
+                          <EditableText
+                            onChange={(e) =>
+                              this.handleMovementChange(
+                                e,
+                                null,
+                                'movement',
+                                'add_new_movement'
+                              )
+                            }
+                            value={this.state.movement}
+                            onConfirm={(value) => {
+                              let movement = Object.create({});
+                              movement.movement = value;
+                              this.setState({
+                                movements: [...this.state.movements, movement],
+                                movement: null,
+                              });
+                            }}
+                          />
+                        </td>
                       </tr>
                     </tbody>
                   </table>
-                </>
+                  <TextArea
+                    className="bp3-fill"
+                    growVertically={true}
+                    placeholder="Notes..."
+                    onChange={(e) =>
+                      this.handleMovementChange(e, null, 'notes', 'addNotes')
+                    }
+                    value={this.state.notes}
+                  />
+                  <Button
+                    className="bp3-minimal"
+                    onClick={this.handleAddComponent}
+                  >
+                    Click To Add Component
+                  </Button>
+                </div>
               ) : (
                 <>
                   <span>Click + to add a new workout component</span>
@@ -178,19 +259,6 @@ class CreateWorkOut extends Component {
               )}
             </Card>
           </div>
-          {/* <Button onClick={this.toggleComponentModalOpen}>New Component</Button>
-          <NewWorkOutComponentModal
-            componentModalOpen={this.state.componentModalOpen}
-            toggleComponentModalOpen={this.toggleComponentModalOpen}
-            handleChange={this.handleChange}
-            handleStageMovement={this.handleStageMovement}
-            movements={this.state.movements}
-            movement={this.state.movement}
-            weight={this.state.weight}
-            repititions={this.state.repititions}
-            sets={this.state.sets}
-            notes={this.state.notes}
-          /> */}
         </FormGroup>
       </Wrapper>
     );

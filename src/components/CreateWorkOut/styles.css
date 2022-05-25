@@ -12,7 +12,32 @@
 
 .align-left {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: start;
   margin-top: 1rem;
+}
+
+.padding-1-rem {
+  padding: 1rem;
+}
+
+.bolding {
+  font-weight: 900;
+  font-size: 1.2rem;
+}
+
+.submit-class {
+  position: flex-end;
+}
+
+.content-top-bottom-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.normal-text {
+  font-weight: 300;
+  padding: 0.25rem;
 }
