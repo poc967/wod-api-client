@@ -12,6 +12,9 @@ import {
   TextArea,
   Popover,
 } from '@blueprintjs/core';
+import { createWorkOut } from '../../actions/workoutActions';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const Wrapper = styled.div`
   width: 90%;
@@ -38,11 +41,13 @@ class CreateWorkOut extends Component {
     let newComponent = {
       description: this.state.description,
       movements: this.state.movements,
+      notes: this.state.notes,
     };
     await this.setState({
       workoutComponents: [...this.state.workoutComponents, newComponent],
       movements: [],
       description: '',
+      notes: '',
     });
     await this.toggleNewComponent();
   };
@@ -67,6 +72,11 @@ class CreateWorkOut extends Component {
           [name]: value.target.value,
         });
         break;
+      case 'addTitle':
+        await this.setState({
+          [name]: value,
+        });
+        break;
       default:
         break;
     }
@@ -76,6 +86,16 @@ class CreateWorkOut extends Component {
     await this.setState({
       newWorkOutComponent: !this.state.newWorkOutComponent,
     });
+  };
+
+  handleSubmit = async () => {
+    console.log('running...');
+    const data = {
+      workoutComponents: this.state.workoutComponents,
+      title: this.state.wodTitle,
+    };
+
+    await this.props.createWorkOut(data);
   };
 
   render() {
@@ -89,7 +109,19 @@ class CreateWorkOut extends Component {
                 <div>
                   <H4>Whiteboard</H4>
                   <div>
-                    <EditableText placeholder="Workout Title" maxLength={65} />
+                    <EditableText
+                      placeholder="Workout Title"
+                      value={this.state.wodTitle}
+                      onChange={(e) =>
+                        this.handleMovementChange(
+                          e,
+                          null,
+                          'wodTitle',
+                          'addTitle'
+                        )
+                      }
+                      maxLength={65}
+                    />
                   </div>
                   <div className="align-left">
                     {this.state.workoutComponents.map((component) => (
@@ -115,7 +147,7 @@ class CreateWorkOut extends Component {
                   </div>
                 </div>
                 <div>
-                  <Button>Submit</Button>
+                  <Button onClick={this.handleSubmit}>Submit</Button>
                 </div>
               </div>
             </Card>
@@ -265,4 +297,10 @@ class CreateWorkOut extends Component {
   }
 }
 
-export default CreateWorkOut;
+const mapStateToProps = (state) => ({});
+
+CreateWorkOut.propTypes = {
+  createWorkOut: PropTypes.func.isRequired,
+};
+
+export default connect(null, { createWorkOut })(CreateWorkOut);
