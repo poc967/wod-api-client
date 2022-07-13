@@ -13,7 +13,7 @@ export const getUser = async (dispatch) => {
 
   try {
     const response = await axios({
-      url: 'http://localhost:5000/api/users/current_user',
+      url: 'http://localhost:5003/api/users/current_user',
       method: 'GET',
     });
     if (response.status === 200) {
@@ -41,7 +41,7 @@ export const authenticateUser = (username, password) => async (dispatch) => {
   try {
     let response = await axios({
       method: 'POST',
-      url: 'http://localhost:5000/api/users/login',
+      url: 'http://localhost:5003/api/users/login',
       data: body,
     });
     if (response.status === 200) {
@@ -63,7 +63,7 @@ export const logoutUser = () => async (dispatch) => {
   try {
     let response = await axios({
       method: 'GET',
-      url: 'http://localhost:5000/api/users/logout',
+      url: 'http://localhost:5003/api/users/logout',
     });
 
     if (response.status === 200) {

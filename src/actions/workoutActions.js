@@ -19,7 +19,7 @@ export const createWorkOut = (data) => async (dispatch) => {
   try {
     let response = await axios({
       method: 'POST',
-      url: 'http://localhost:5000/api/wod',
+      url: 'http://localhost:5003/api/wod',
       data,
     });
 
