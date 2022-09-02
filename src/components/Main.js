@@ -30,6 +30,21 @@ const WorkoutBox = styled.div`
   border: solid black 2px;
   border-radius: 0.5rem;
   margin-top: 15px;
+  padding-top: 15px;
+
+  ul {
+    font-size: medium;
+    font-weight: 200;
+  }
+
+  ul li {
+    padding: 5px;
+  }
+`;
+
+const Description = styled.div`
+  font-size: 1.125rem;
+  font-weight: bold;
 `;
 
 let mockWorkOutData = {
@@ -53,23 +68,76 @@ let mockWorkOutData = {
           weight: '20/14',
           notes: null,
         },
+        {
+          movement: {
+            id: '62f7131f441f080786bcf621',
+            name: 'Snatch',
+            is_deleted: false,
+            created: 'Fri Aug 12 22:57:34 2022',
+          },
+          repititions: '5',
+          sets: null,
+          weight: '135/95#',
+          notes: null,
+        },
+        {
+          movement: {
+            id: '62f7131f441f080786bcf621',
+            name: 'Burpees',
+            is_deleted: false,
+            created: 'Fri Aug 12 22:57:34 2022',
+          },
+          repititions: '10',
+          sets: null,
+          weight: null,
+          notes: null,
+        },
+      ],
+      notes: 'unbroken',
+      created: 'Fri Aug 12 23:24:25 2022',
+    },
+    {
+      id: '62f7196b980d371bb834fc81',
+      description: 'EMOM 15',
+      is_deleted: false,
+      movements: [
+        {
+          movement: {
+            id: '62f7131f441f080786bcf621',
+            name: 'Snatch',
+            is_deleted: false,
+            created: 'Fri Aug 12 22:57:34 2022',
+          },
+          repititions: '1',
+          sets: null,
+          weight: null,
+          notes: null,
+        },
       ],
       notes: 'unbroken',
       created: 'Fri Aug 12 23:24:25 2022',
     },
   ],
 };
+
+const calcDate = () => {
+  let today = new Date().toDateString();
+  return today;
+};
 class Main extends Component {
   render() {
     return (
       <Wrapper>
-        <Title>Aug 18, 2022</Title>
+        <Title>{calcDate()}</Title>
         {mockWorkOutData.work_outs.map((work_out) => (
           <WorkoutBox>
-            {work_out.description}
-            <ul style={{ listStyleType: 'none' }}>
+            <Description>{work_out.description}</Description>
+            <ul style={{ listStyleType: 'none', padding: '0' }}>
               {work_out.movements.map((movement) => (
-                <li>{`${movement.repititions} ${movement.movement.name} (${movement.weight})`}</li>
+                <li>
+                  {movement.repititions} {movement.movement.name}{' '}
+                  {movement.weight ? `(${movement.weight})` : null}
+                </li>
               ))}
             </ul>
           </WorkoutBox>
