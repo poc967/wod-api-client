@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { getWods } from '../actions/wodActions';
 
 // components
 import Button1 from './Button1';
@@ -27,8 +30,7 @@ const WorkoutBox = styled.div`
   flex-direction: column;
   width: 95vw;
   margin: 0 auto;
-  border: solid black 2px;
-  border-radius: 0.5rem;
+  border: solid black 1px;
   margin-top: 15px;
   padding-top: 15px;
 
@@ -125,6 +127,10 @@ const calcDate = () => {
   return today;
 };
 class Main extends Component {
+  componentDidMount = () => {
+    this.props.getWods();
+  };
+
   render() {
     return (
       <Wrapper>
@@ -152,4 +158,13 @@ class Main extends Component {
   }
 }
 
-export default Main;
+const mapStateToProps = (state) => ({
+  wods: state.wod,
+});
+
+Main.propTypes = {
+  wods: PropTypes.array,
+  getWods: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, { getWods })(Main);
