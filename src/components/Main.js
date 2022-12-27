@@ -127,27 +127,32 @@ const calcDate = () => {
   return today;
 };
 class Main extends Component {
-  componentDidMount = () => {
-    this.props.getWods();
-  };
+  async componentDidMount() {
+    await this.props.getWods();
+  }
 
   render() {
     return (
       <Wrapper>
         <Title>{calcDate()}</Title>
-        {mockWorkOutData.work_outs.map((work_out) => (
-          <WorkoutBox>
-            <Description>{work_out.description}</Description>
-            <ul style={{ listStyleType: 'none', padding: '0' }}>
-              {work_out.movements.map((movement) => (
-                <li>
-                  {movement.repititions} {movement.movement.name}{' '}
-                  {movement.weight ? `(${movement.weight})` : null}
-                </li>
-              ))}
-            </ul>
-          </WorkoutBox>
-        ))}
+        {console.log(this.props.wods.wods)}
+        {this.props.wods.fetchingWods ? (
+          <span>loading...</span>
+        ) : (
+          this.props.wods.wods[0].work_outs.map((work_out) => (
+            <WorkoutBox>
+              <Description>{work_out.description}</Description>
+              <ul style={{ listStyleType: 'none', padding: '0' }}>
+                {work_out.movements.map((movement) => (
+                  <li>
+                    {movement.repititions} {movement.movement.name}{' '}
+                    {movement.weight ? `(${movement.weight})` : null}
+                  </li>
+                ))}
+              </ul>
+            </WorkoutBox>
+          ))
+        )}
         <ButtonContainer>
           <Button1 text="New Workout" />
           <Button1 text="Whiteboard" />
@@ -163,7 +168,7 @@ const mapStateToProps = (state) => ({
 });
 
 Main.propTypes = {
-  wods: PropTypes.array,
+  wods: PropTypes.object,
   getWods: PropTypes.func.isRequired,
 };
 
