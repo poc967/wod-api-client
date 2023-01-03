@@ -14,7 +14,6 @@ export const createWorkoutRequested = (dispatch) => {
 };
 
 export const createWorkOut = (data) => async (dispatch) => {
-  console.log('running...');
   dispatch(createWorkoutRequested);
   try {
     let response = await axios({
@@ -28,11 +27,18 @@ export const createWorkOut = (data) => async (dispatch) => {
         type: CREATE_WORKOUT_SUCCESS,
         payload: response.data,
       });
+      return {
+        success: true,
+        message: 'Workout Created Successfully',
+      };
     }
   } catch (error) {
     dispatch({
       type: CREATE_WORKOUT_FAIL,
     });
-    // TODO: return error with an error reducer here
+    return {
+      success: false,
+      message: error,
+    };
   }
 };
