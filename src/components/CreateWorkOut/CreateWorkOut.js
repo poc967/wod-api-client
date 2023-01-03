@@ -11,6 +11,8 @@ import {
   EditableText,
   TextArea,
   Popover,
+  Toaster,
+  Toast,
 } from '@blueprintjs/core';
 import { createWorkOut } from '../../actions/workoutActions';
 import { connect } from 'react-redux';
@@ -24,6 +26,10 @@ const Wrapper = styled.div`
   flex-direction: column;
   min-height: 100%;
 `;
+
+const AppToaster = Toaster.create({
+  className: 'recipe-toaster',
+});
 class CreateWorkOut extends Component {
   state = {
     workoutComponents: [],
@@ -35,6 +41,7 @@ class CreateWorkOut extends Component {
     notes: '',
     description: '',
     newWorkOutComponent: false,
+    createWorkOutError: null,
   };
 
   handleAddComponent = async () => {
@@ -89,13 +96,29 @@ class CreateWorkOut extends Component {
   };
 
   handleSubmit = async () => {
-    console.log('running...');
     const data = {
       workoutComponents: this.state.workoutComponents,
       title: this.state.wodTitle,
     };
 
-    await this.props.createWorkOut(data);
+    let status = await this.props.createWorkOut(data);
+    if (!status.success) {
+      AppToaster.show({ message: status.message.message });
+    } else {
+      AppToaster.show({ message: status.message });
+    }
+
+    this.setState({
+      workoutComponents: [],
+      movements: [],
+      wodTitle: null,
+      movement: null,
+      weight: null,
+      repititions: null,
+      notes: '',
+      description: '',
+      newWorkOutComponent: false,
+    });
   };
 
   render() {

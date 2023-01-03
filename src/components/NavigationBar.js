@@ -12,6 +12,7 @@ import {
   MenuItem,
   Popover,
 } from '@blueprintjs/core';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions/authActions';
 import PropTypes from 'prop-types';
@@ -31,11 +32,13 @@ class NavigationBar extends Component {
     const { isAuthenticated, currentUser } = this.props;
 
     return (
-      <Navbar>
+      <Navbar style={{ backgroundColor: 'mediumaquamarine', color: 'bisque' }}>
         <NavbarGroup align={Alignment.LEFT}>
           <NavbarHeading>WOD Tracker</NavbarHeading>
           <NavbarDivider />
-          <Button className="bp3-minimal" icon="home" />
+          <Link to="/">
+            <Button className="bp3-minimal" icon="home" />
+          </Link>
           <Button className="bp3-minimal" icon="document" />
         </NavbarGroup>
         {isAuthenticated ? (

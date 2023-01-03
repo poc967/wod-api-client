@@ -57,7 +57,7 @@ const Main = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getWods());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Wrapper>
@@ -84,9 +84,9 @@ const Main = (props) => {
         )
       )}
       <ButtonContainer>
-        <Button1 text="New Workout" />
-        <Button1 text="Whiteboard" />
-        <Button1 text="Feed" />
+        <Button1 text="Create New Workout" />
+        <Button1 text="Library" />
+        <Button1 text="Friend Activity" />
       </ButtonContainer>
     </Wrapper>
   );
