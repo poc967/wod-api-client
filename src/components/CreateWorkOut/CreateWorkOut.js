@@ -17,6 +17,8 @@ import {
 import { createWorkOut } from '../../actions/workoutActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Wrapper = styled.div`
   width: 90%;
@@ -39,6 +41,7 @@ class CreateWorkOut extends Component {
     weight: null,
     repititions: null,
     notes: '',
+    date: null,
     description: '',
     newWorkOutComponent: false,
     createWorkOutError: null,
@@ -98,6 +101,7 @@ class CreateWorkOut extends Component {
   handleSubmit = async () => {
     const data = {
       workoutComponents: this.state.workoutComponents,
+      date: this.state.date,
       title: this.state.wodTitle,
     };
 
@@ -168,6 +172,16 @@ class CreateWorkOut extends Component {
                       Add Component...
                     </Button>
                   </div>
+                </div>
+                <div>
+                  <DatePicker
+                    selected={this.state.date}
+                    onChange={(e) =>
+                      this.setState({
+                        date: e,
+                      })
+                    }
+                  />
                 </div>
                 <div>
                   <Button onClick={this.handleSubmit}>Submit</Button>
