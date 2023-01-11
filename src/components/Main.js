@@ -9,12 +9,13 @@ import Button1 from './Button1';
 
 const ButtonContainer = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
 `;
 const Wrapper = styled.div`
   padding-top: 1rem;
-  width: 95%;
+  width: 60vw;
   height: 100vh;
   margin: 0 auto;
   display: flex;
@@ -23,16 +24,18 @@ const Wrapper = styled.div`
 
 const Title = styled.span`
   font-size: 1.125rem;
+  margin-bottom: 15px;
 `;
 
 const WorkoutBox = styled.div`
   display: flex;
   flex-direction: column;
-  width: 95vw;
+  width: 100%;
   margin: 0 auto;
   border: solid black 1px;
-  margin-top: 15px;
   padding-top: 15px;
+  margin-bottom: 15px;
+  border-radius: 3px;
 
   ul {
     font-size: medium;
@@ -83,11 +86,6 @@ const Main = (props) => {
           ))
         )
       )}
-      <ButtonContainer>
-        <Button1 text="Create New Workout" />
-        <Button1 text="Library" />
-        <Button1 text="Friend Activity" />
-      </ButtonContainer>
     </Wrapper>
   );
 };

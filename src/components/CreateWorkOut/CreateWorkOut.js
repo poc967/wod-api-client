@@ -21,12 +21,17 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const Wrapper = styled.div`
-  width: 90%;
+  width: 72%;
   margin: 0 auto;
   margin-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
   min-height: 100%;
+`;
+
+const DatePickerWrapper = styled.div`
+  width: auto;
+  margin-top: 15px;
 `;
 
 const AppToaster = Toaster.create({
@@ -121,7 +126,14 @@ class CreateWorkOut extends Component {
       repititions: null,
       notes: '',
       description: '',
+      date: null,
       newWorkOutComponent: false,
+    });
+  };
+
+  handleClearDate = async () => {
+    await this.setState({
+      date: null,
     });
   };
 
@@ -150,6 +162,24 @@ class CreateWorkOut extends Component {
                       maxLength={65}
                     />
                   </div>
+                  <DatePickerWrapper>
+                    <DatePicker
+                      selected={this.state.date}
+                      placeholderText="Select date"
+                      isClearable={true}
+                      onChange={(e) =>
+                        this.setState({
+                          date: e,
+                        })
+                      }
+                      className="small-text"
+                    />
+                    {/* <Button
+                    className="bp3-minimal"
+                    icon="cross"
+                    onClick={this.handleClearDate}
+                  /> */}
+                  </DatePickerWrapper>
                   <div className="align-left">
                     {this.state.workoutComponents.map((component) => (
                       <div className="padding-1-rem">
@@ -172,16 +202,6 @@ class CreateWorkOut extends Component {
                       Add Component...
                     </Button>
                   </div>
-                </div>
-                <div>
-                  <DatePicker
-                    selected={this.state.date}
-                    onChange={(e) =>
-                      this.setState({
-                        date: e,
-                      })
-                    }
-                  />
                 </div>
                 <div>
                   <Button onClick={this.handleSubmit}>Submit</Button>
