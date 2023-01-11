@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const Wrapper = styled.button`
-  width: 95vw;
+  width: 100%;
   height: 6vh;
   border-radius: 0.5rem;
   border: solid black 2px;

@@ -32,14 +32,28 @@ class NavigationBar extends Component {
     const { isAuthenticated, currentUser } = this.props;
 
     return (
-      <Navbar style={{ backgroundColor: 'mediumaquamarine', color: 'bisque' }}>
+      <Navbar style={{ backgroundColor: 'mediumaquamarine', color: '#5c7080' }}>
         <NavbarGroup align={Alignment.LEFT}>
           <NavbarHeading>WOD Tracker</NavbarHeading>
           <NavbarDivider />
           <Link to="/">
-            <Button className="bp3-minimal" icon="home" />
+            <Button className="bp3-minimal grey" icon="home">
+              Dashboard
+            </Button>
           </Link>
-          <Button className="bp3-minimal" icon="document" />
+          <Link to="/workout">
+            <Button className="bp3-minimal grey" icon="new-prescription">
+              Add Workout
+            </Button>
+          </Link>
+          <Link to="/">
+            <Button className="bp3-minimal grey" icon="home">
+              Library
+            </Button>
+          </Link>
+          <Button className="bp3-minimal grey" icon="document">
+            Friend Activity
+          </Button>
         </NavbarGroup>
         {isAuthenticated ? (
           <NavbarGroup align={Alignment.RIGHT}>

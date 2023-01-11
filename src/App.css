@@ -67,6 +67,10 @@
   height: 35vh;
 }
 
+.grey span {
+  color: #5c7080;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
