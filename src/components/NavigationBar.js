@@ -21,6 +21,7 @@ class NavigationBar extends Component {
   render() {
     const MenuFragment = (
       <Menu>
+        <MenuItem text="Settings" icon="cog" />
         <MenuItem
           text="Logout"
           icon="log-out"
@@ -32,11 +33,11 @@ class NavigationBar extends Component {
     const { isAuthenticated, currentUser } = this.props;
 
     return (
-      <Navbar style={{ backgroundColor: 'mediumaquamarine', color: '#5c7080' }}>
+      <Navbar style={{ backgroundColor: '#383E47', color: '#D3D8DE' }}>
         <NavbarGroup align={Alignment.LEFT}>
           <NavbarHeading>WOD Tracker</NavbarHeading>
           <NavbarDivider />
-          <Link to="/">
+          {/* <Link to="/">
             <Button className="bp3-minimal grey" icon="home">
               Dashboard
             </Button>
@@ -53,7 +54,7 @@ class NavigationBar extends Component {
           </Link>
           <Button className="bp3-minimal grey" icon="document">
             Friend Activity
-          </Button>
+          </Button> */}
         </NavbarGroup>
         {isAuthenticated ? (
           <NavbarGroup align={Alignment.RIGHT}>

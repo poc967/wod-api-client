@@ -3,9 +3,7 @@ import styled from 'styled-components';
 import { connect, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getWods } from '../actions/wodActions';
-
-// components
-import Button1 from './Button1';
+import { Card, Button, Elevation } from '@blueprintjs/core';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -35,11 +33,11 @@ const WorkoutBox = styled.div`
   border: solid black 1px;
   padding-top: 15px;
   margin-bottom: 15px;
-  border-radius: 3px;
+  border-radius: 4px;
+  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.5);
 
   ul {
     font-size: medium;
-    font-weight: 200;
   }
 
   ul li {
@@ -50,6 +48,7 @@ const WorkoutBox = styled.div`
 const Description = styled.div`
   font-size: 1.125rem;
   font-weight: bold;
+  color: #4c90f0;
 `;
 
 const calcDate = () => {
