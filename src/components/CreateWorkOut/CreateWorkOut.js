@@ -13,6 +13,7 @@ import {
   Popover,
   Toaster,
   Toast,
+  Elevation,
 } from '@blueprintjs/core';
 import { createWorkOut } from '../../actions/workoutActions';
 import { connect } from 'react-redux';
@@ -22,11 +23,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const Wrapper = styled.div`
   width: 72%;
-  margin: 0 auto;
+  // margin: 0 auto;
   margin-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
   min-height: 100%;
+  margin-left: 4rem;
 `;
 
 const DatePickerWrapper = styled.div`
@@ -143,7 +145,10 @@ class CreateWorkOut extends Component {
         <h1>New Workout</h1>
         <FormGroup>
           <div className="flex-row">
-            <Card className="margin-right width-half">
+            <Card
+              className="margin-right width-half"
+              elevation={Elevation.THREE}
+            >
               <div className="content-top-bottom-button">
                 <div>
                   <H4>Whiteboard</H4>
@@ -208,7 +213,10 @@ class CreateWorkOut extends Component {
                 </div>
               </div>
             </Card>
-            <Card className="custom-bp3-card flex-column width-half min-height-half">
+            <Card
+              className="custom-bp3-card flex-column width-half min-height-half"
+              elevation={Elevation.THREE}
+            >
               {this.state.newWorkOutComponent ? (
                 <div>
                   <TextArea

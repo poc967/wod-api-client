@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   padding-top: 1rem;
   width: 60vw;
   height: 100vh;
-  margin: 0 auto;
+  margin-left: 4rem;
   display: flex;
   flex-direction: column;
 `;
@@ -30,11 +30,11 @@ const WorkoutBox = styled.div`
   flex-direction: column;
   width: 100%;
   margin: 0 auto;
-  border: solid black 1px;
   padding-top: 15px;
   margin-bottom: 15px;
   border-radius: 4px;
-  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 1px rgb(16 22 26 / 10%), 0 2px 4px rgb(16 22 26 / 20%),
+    0 8px 24px rgb(16 22 26 / 20%);
 
   ul {
     font-size: medium;
@@ -52,7 +52,13 @@ const Description = styled.div`
 `;
 
 const calcDate = () => {
-  let today = new Date().toDateString();
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  let today = new Date().toLocaleDateString('en-US', options);
   return today;
 };
 const Main = (props) => {

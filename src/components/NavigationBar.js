@@ -11,6 +11,7 @@ import {
   MenuDivider,
   MenuItem,
   Popover,
+  Icon,
 } from '@blueprintjs/core';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -36,7 +37,8 @@ class NavigationBar extends Component {
       <Navbar style={{ backgroundColor: '#383E47', color: '#D3D8DE' }}>
         <NavbarGroup align={Alignment.LEFT}>
           <NavbarHeading>WOD Tracker</NavbarHeading>
-          <NavbarDivider />
+          <NavbarDivider style={{ backgroundColor: 'white' }} />
+          <Icon icon="menu" />
           {/* <Link to="/">
             <Button className="bp3-minimal grey" icon="home">
               Dashboard
@@ -61,7 +63,7 @@ class NavigationBar extends Component {
             <Popover content={MenuFragment}>
               <Button className="bp3-minimal" icon="user" />
             </Popover>
-            <NavbarDivider />
+            <NavbarDivider style={{ backgroundColor: 'white' }} />
             <NavbarHeading>Welcome, {currentUser.firstName}!</NavbarHeading>
           </NavbarGroup>
         ) : null}
