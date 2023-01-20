@@ -1,0 +1,39 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    min-width: 50vw;
+    max-width: 100vw;
+    margin-left: 4rem;
+    min-height: 100vh;
+    padding-top: 1rem;
+}
+
+.top-box-layout {
+    height: 11rem;
+    display: grid;
+    grid-template-columns: [row1-start] 33% [row1-end row2-start] auto [row2-end];
+    grid-template-rows: [row1-start] 33% [row1-end row2-start] 33% [row2-end row3-start] auto [row3-end];
+    grid-template-areas: 
+    "image name"
+    "image analytics"
+    "image analytics";
+}
+
+.profile-image {
+    grid-area: image;
+    background-color: aquamarine;
+}
+
+.profile-name {
+    grid-area: name;
+    background-color: deeppink;
+}
+
+.profile-analytics {
+    grid-area: analytics;
+    background-color: palegoldenrod;
+}
+
+.bottom-box-layout {
+    margin-top: 2rem;
+}

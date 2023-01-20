@@ -12,6 +12,7 @@ import Main from './components/Main';
 import Login from './components/Login';
 import CreateWorkOut from './components/CreateWorkOut/CreateWorkOut';
 import PrivateRoute from './components/PrivateRoute';
+import Profile from './components/Profile/Profile';
 
 const AppContainer = styled.div`
   width: 100wv;
@@ -76,6 +77,11 @@ class App extends Component {
               <Button className="bp3-minimal grey" icon="document">
                 Friend Activity
               </Button>
+              <Link to="/profile">
+                <Button className="bp3-minimal grey" icon="settings">
+                  Profile
+                </Button>
+              </Link>
             </div>
           </SideNav>
           <Routes>
@@ -97,6 +103,16 @@ class App extends Component {
                   isAuthenticated={this.props.auth.is_authenticated}
                 >
                   <CreateWorkOut />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute
+                  isAuthenticated={this.props.auth.is_authenticated}
+                >
+                  <Profile />
                 </PrivateRoute>
               }
             />
