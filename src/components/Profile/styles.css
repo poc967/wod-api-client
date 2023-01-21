@@ -67,3 +67,14 @@
 .bottom-box-layout {
     margin-top: 2rem;
 }
+
+.basic-info-layout {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.basic-info-layout-text-field {
+    width: auto;
+}

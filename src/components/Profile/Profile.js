@@ -1,6 +1,17 @@
 import React from 'react';
 import './styles.css';
-import { Card, Elevation, Tabs, Tab } from '@blueprintjs/core';
+import { Card, Elevation, Tabs, Tab, EditableText } from '@blueprintjs/core';
+
+const BasicInfo = (props) => (
+  <div className="basic-info-layout">
+    {/* <EditableText
+      value="pat_test@gmail.com"
+      className="basic-info-layout-text-field"
+    /> */}
+    <span>pat_test@gmail.com</span>
+    <span>Joined Feb 19, 2020</span>
+  </div>
+);
 
 const Profile = (props) => {
   return (
@@ -27,7 +38,7 @@ const Profile = (props) => {
       </Card>
       <Card className="bottom-box-layout" elevation={Elevation.THREE}>
         <Tabs id="TabsExample" selectedTabId="basic">
-          <Tab id="basic" title="Basic Info" panel={<span>Basic Info</span>} />
+          <Tab id="basic" title="Basic Info" panel={<BasicInfo />} />
           <Tab
             id="mb"
             title="Benchmark Lifts"
