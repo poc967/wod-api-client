@@ -7,12 +7,27 @@ const Profile = (props) => {
     <div className="layout">
       <Card className="top-box-layout" elevation={Elevation.THREE}>
         <div className="profile-image"></div>
-        <div className="profile-name"></div>
-        <div className="profile-analytics"></div>
+        <div className="profile-name">
+          <span>Patrick Test-User</span>
+        </div>
+        <div className="profile-analytics">
+          <div>
+            <span className="profile-analytics-number">75</span>
+            <span className="profile-analytics-tag">Workouts Completed</span>
+          </div>
+          <div>
+            <span className="profile-analytics-number">4</span>
+            <span className="profile-analytics-tag">Avg. Workouts / Week</span>
+          </div>
+          <div>
+            <span className="profile-analytics-number">10</span>
+            <span className="profile-analytics-tag">Friends</span>
+          </div>
+        </div>
       </Card>
       <Card className="bottom-box-layout" elevation={Elevation.THREE}>
-        <Tabs id="TabsExample" selectedTabId="rx">
-          <Tab id="ng" title="Basic Info" panel={<span>Basic Info</span>} />
+        <Tabs id="TabsExample" selectedTabId="basic">
+          <Tab id="basic" title="Basic Info" panel={<span>Basic Info</span>} />
           <Tab
             id="mb"
             title="Benchmark Lifts"
