@@ -9,6 +9,7 @@
 
 .top-box-layout {
     height: 11rem;
+    max-width: 33rem;
     display: grid;
     grid-template-columns: [row1-start] 33% [row1-end row2-start] auto [row2-end];
     grid-template-rows: [row1-start] 33% [row1-end row2-start] 33% [row2-end row3-start] auto [row3-end];
@@ -20,11 +21,15 @@
 
 .profile-image {
     grid-area: image;
-    background-image: url('/public/cheems.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 3px;
+}
+
+.profile-image:hover {
+    background-color: rgba(178,183,190, 0.3);
+    transition: 0.3s;
 }
 
 .profile-name {
@@ -71,8 +76,14 @@
 .basic-info-layout {
     display: flex;
     width: 100%;
+    min-height: 13vh;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.basic-info-layout span {
+    padding-top: 15px;
 }
 
 .basic-info-layout-text-field {

@@ -13,6 +13,7 @@ const initialState = {
     firstName: null,
     lastName: null,
     email: null,
+    profilePicture: null,
   },
 };
 
@@ -27,6 +28,7 @@ function authReducer(state = initialState, action) {
           firstName: action.payload.data.first_name,
           lastName: action.payload.data.last_name,
           email: action.payload.data.email,
+          profilePicture: action.payload.data.profile_picture,
         },
       };
     case USER_LOADING:
@@ -44,6 +46,7 @@ function authReducer(state = initialState, action) {
           firstName: null,
           lastName: null,
           email: null,
+          profilePicture: null,
         },
       };
     default:
