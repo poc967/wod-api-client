@@ -3,6 +3,7 @@ import {
   USER_LOADING,
   USER_LOGIN_FAIL,
   USER_LOGOUT,
+  EDIT_USER_SUCCESS,
 } from '../constants/actions';
 
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
 function authReducer(state = initialState, action) {
   switch (action.type) {
     case USER_LOGIN_SUCCESS:
+    case EDIT_USER_SUCCESS:
       return {
         is_authenticated: true,
         fetching: false,

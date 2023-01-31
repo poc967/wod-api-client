@@ -11,6 +11,8 @@ import {
 } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { editUser } from '../../actions/authActions';
+import FormData from 'form-data';
 
 const BasicInfo = (props) => (
   <div className="basic-info-layout">
@@ -35,7 +37,12 @@ const Profile = (props) => {
     setActiveTab(e);
   }
 
-  function handleSubmitProfilePicture(e) {}
+  function handleSubmitProfilePicture(e) {
+    console.log(e.target.files[0]);
+    let data = new FormData();
+    data.append('image', e.target.files[0]);
+    props.editUser(id, data);
+  }
 
   return (
     <div className="layout">
@@ -44,7 +51,11 @@ const Profile = (props) => {
           className="profile-image"
           style={{ backgroundImage: `url(${profilePicture})` }}
         >
-          <input type="file" hidden />
+          <input
+            type="file"
+            hidden
+            onChange={(e) => handleSubmitProfilePicture(e)}
+          />
         </label>
         <div className="profile-name">
           <span>{`${firstName} ${lastName}`}</span>
@@ -93,6 +104,7 @@ const mapStateToProps = (state) => ({
 
 Profile.propTypes = {
   user: PropTypes.object,
+  editUser: PropTypes.func,
 };
 
-export default connect(mapStateToProps, null)(Profile);
+export default connect(mapStateToProps, { editUser })(Profile);
