@@ -3,6 +3,7 @@ import {
   USER_LOADING,
   USER_LOGIN_FAIL,
   USER_LOGOUT,
+  EDIT_USER_SUCCESS,
 } from '../constants/actions';
 
 const initialState = {
@@ -13,12 +14,14 @@ const initialState = {
     firstName: null,
     lastName: null,
     email: null,
+    profilePicture: null,
   },
 };
 
 function authReducer(state = initialState, action) {
   switch (action.type) {
     case USER_LOGIN_SUCCESS:
+    case EDIT_USER_SUCCESS:
       return {
         is_authenticated: true,
         fetching: false,
@@ -27,6 +30,7 @@ function authReducer(state = initialState, action) {
           firstName: action.payload.data.first_name,
           lastName: action.payload.data.last_name,
           email: action.payload.data.email,
+          profilePicture: action.payload.data.profile_picture,
         },
       };
     case USER_LOADING:
@@ -44,6 +48,7 @@ function authReducer(state = initialState, action) {
           firstName: null,
           lastName: null,
           email: null,
+          profilePicture: null,
         },
       };
     default:

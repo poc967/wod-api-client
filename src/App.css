@@ -7,6 +7,10 @@
   width: 100%;
 }
 
+:focus {
+  outline: none;
+}
+
 .padding-top {
   padding-top: 1rem;
 }
