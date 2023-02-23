@@ -42,6 +42,10 @@
   padding: 0.25rem;
 }
 
+.comp-title {
+  margin-bottom: 12px;
+}
+
 Button {
   color: #D3D8DE;
 }

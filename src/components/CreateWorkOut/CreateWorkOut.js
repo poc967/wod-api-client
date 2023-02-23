@@ -14,12 +14,13 @@ import {
   Toaster,
   Toast,
   Elevation,
+  ButtonGroup,
 } from '@blueprintjs/core';
 import { createWorkOut } from '../../actions/workoutActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { DayPicker } from 'react-day-picker';
+import 'react-day-picker/dist/style.css';
 
 const Wrapper = styled.div`
   width: 72%;
@@ -33,7 +34,12 @@ const Wrapper = styled.div`
 
 const DatePickerWrapper = styled.div`
   width: auto;
-  margin-top: 15px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.3s;
 `;
 
 const AppToaster = Toaster.create({
@@ -52,6 +58,8 @@ class CreateWorkOut extends Component {
     description: '',
     newWorkOutComponent: false,
     createWorkOutError: null,
+    activePanel: 'wodPanel',
+    title: '',
   };
 
   handleAddComponent = async () => {
@@ -59,6 +67,7 @@ class CreateWorkOut extends Component {
       description: this.state.description,
       movements: this.state.movements,
       notes: this.state.notes,
+      title: this.state.title,
     };
     await this.setState({
       workoutComponents: [...this.state.workoutComponents, newComponent],
@@ -130,6 +139,8 @@ class CreateWorkOut extends Component {
       description: '',
       date: null,
       newWorkOutComponent: false,
+      activePanel: 'wodPanel',
+      title: '',
     });
   };
 
@@ -139,7 +150,82 @@ class CreateWorkOut extends Component {
     });
   };
 
+  handleSetDate = async (date) => {
+    await this.setState({
+      date: date,
+    });
+  };
+
+  handleNextPanel = async (panel) => {
+    await this.setState({
+      activePanel: panel,
+    });
+  };
+
   render() {
+    const WhiteboardComponent = (
+      <div className="content-top-bottom-button">
+        <div>
+          <H4>Whiteboard</H4>
+          <div>
+            <EditableText
+              placeholder="Workout Title"
+              value={this.state.wodTitle}
+              onChange={(e) =>
+                this.handleMovementChange(e, null, 'wodTitle', 'addTitle')
+              }
+              maxLength={65}
+            />
+          </div>
+          <div className="align-left">
+            {this.state.workoutComponents.map((component) => (
+              <div className="padding-1-rem">
+                <span className="bolding">{component.description}</span>
+                {component.movements.map((movement) => (
+                  <div className="normal-text">
+                    {movement.repititions} {movement.movement}
+                    {movement.weight ? <>({movement.weight})</> : null}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+          <div className="align-left">
+            <Button
+              className="bp3-minimal"
+              icon="plus"
+              onClick={this.toggleNewComponent}
+            >
+              Add Component...
+            </Button>
+          </div>
+        </div>
+        <div>
+          <Button onClick={() => this.handleNextPanel('datePicker')}>
+            Next
+          </Button>
+        </div>
+      </div>
+    );
+
+    const DatePickerPanel = (
+      <DatePickerWrapper>
+        <DayPicker
+          mode="single"
+          selected={this.state.date}
+          onSelect={this.handleSetDate}
+        />
+        <div>
+          <ButtonGroup>
+            <Button onClick={() => this.handleNextPanel('wodPanel')}>
+              Back
+            </Button>
+            <Button onClick={this.handleSubmit}>Submit</Button>
+          </ButtonGroup>
+        </div>
+      </DatePickerWrapper>
+    );
+
     return (
       <Wrapper>
         <h1>New Workout</h1>
@@ -149,69 +235,10 @@ class CreateWorkOut extends Component {
               className="margin-right width-half"
               elevation={Elevation.THREE}
             >
-              <div className="content-top-bottom-button">
-                <div>
-                  <H4>Whiteboard</H4>
-                  <div>
-                    <EditableText
-                      placeholder="Workout Title"
-                      value={this.state.wodTitle}
-                      onChange={(e) =>
-                        this.handleMovementChange(
-                          e,
-                          null,
-                          'wodTitle',
-                          'addTitle'
-                        )
-                      }
-                      maxLength={65}
-                    />
-                  </div>
-                  <DatePickerWrapper>
-                    <DatePicker
-                      selected={this.state.date}
-                      placeholderText="Select date"
-                      isClearable={true}
-                      onChange={(e) =>
-                        this.setState({
-                          date: e,
-                        })
-                      }
-                      className="small-text"
-                    />
-                    {/* <Button
-                    className="bp3-minimal"
-                    icon="cross"
-                    onClick={this.handleClearDate}
-                  /> */}
-                  </DatePickerWrapper>
-                  <div className="align-left">
-                    {this.state.workoutComponents.map((component) => (
-                      <div className="padding-1-rem">
-                        <span className="bolding">{component.description}</span>
-                        {component.movements.map((movement) => (
-                          <div className="normal-text">
-                            {movement.repititions} {movement.movement}
-                            {movement.weight ? <>({movement.weight})</> : null}
-                          </div>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="align-left">
-                    <Button
-                      className="bp3-minimal"
-                      icon="plus"
-                      onClick={this.toggleNewComponent}
-                    >
-                      Add Component...
-                    </Button>
-                  </div>
-                </div>
-                <div>
-                  <Button onClick={this.handleSubmit}>Submit</Button>
-                </div>
-              </div>
+              {this.state.activePanel === 'wodPanel'
+                ? WhiteboardComponent
+                : null}
+              {this.state.activePanel === 'datePicker' ? DatePickerPanel : null}
             </Card>
             <Card
               className="custom-bp3-card flex-column width-half min-height-half"
@@ -219,6 +246,16 @@ class CreateWorkOut extends Component {
             >
               {this.state.newWorkOutComponent ? (
                 <div>
+                  <div className="comp-title">
+                    <EditableText
+                      placeholder="Title"
+                      value={this.state.title}
+                      onChange={(e) =>
+                        this.handleMovementChange(e, null, 'title', 'addTitle')
+                      }
+                      maxLength={65}
+                    />
+                  </div>
                   <TextArea
                     className="bp3-fill"
                     growVertically={true}

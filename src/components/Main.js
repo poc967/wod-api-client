@@ -78,6 +78,7 @@ const Main = (props) => {
         props.wods.wods.map((wod) =>
           wod.work_outs.map((work_out) => (
             <WorkoutBox>
+              <h1>{work_out.title}</h1>
               <Description>{work_out.description}</Description>
               <ul style={{ listStyleType: 'none', padding: '0' }}>
                 {work_out.movements.map((movement) => (
