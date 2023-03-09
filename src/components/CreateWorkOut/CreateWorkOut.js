@@ -20,11 +20,13 @@ import { createWorkOut } from '../../actions/workoutActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { DayPicker } from 'react-day-picker';
+import RichEditor from '../Editor/Editor';
+import DisplayEditor from '../DisplayEditor/DisplayEditor';
+import { EditorState, RichUtils, convertToRaw } from 'draft-js';
 import 'react-day-picker/dist/style.css';
 
 const Wrapper = styled.div`
   width: 72%;
-  // margin: 0 auto;
   margin-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -47,57 +49,49 @@ const AppToaster = Toaster.create({
 });
 class CreateWorkOut extends Component {
   state = {
-    workoutComponents: [],
-    movements: [],
-    wodTitle: null,
-    movement: null,
-    weight: null,
-    repititions: null,
-    notes: '',
     date: null,
-    description: '',
     newWorkOutComponent: false,
     createWorkOutError: null,
     activePanel: 'wodPanel',
     title: '',
+    editorState: EditorState.createEmpty(),
+    rawWorkouts: [],
+  };
+
+  handleEditorChange = async (editorState) => {
+    await this.setState({
+      editorState: editorState,
+    });
+  };
+
+  toggleInlineStyle = (style) => {
+    this.handleEditorChange(
+      RichUtils.toggleInlineStyle(this.state.editorState, style)
+    );
+  };
+
+  toggleBlockStyle = (style) => {
+    this.handleEditorChange(
+      RichUtils.toggleBlockType(this.state.editorState, style)
+    );
   };
 
   handleAddComponent = async () => {
-    let newComponent = {
-      description: this.state.description,
-      movements: this.state.movements,
-      notes: this.state.notes,
-      title: this.state.title,
-    };
+    const data = JSON.stringify(
+      convertToRaw(this.state.editorState.getCurrentContent())
+    );
+    this.state.rawWorkouts.push(data);
     await this.setState({
-      workoutComponents: [...this.state.workoutComponents, newComponent],
-      movements: [],
-      description: '',
-      notes: '',
+      rawWorkouts: this.state.rawWorkouts,
+    });
+    await this.setState({
+      editorState: EditorState.createEmpty(),
     });
     await this.toggleNewComponent();
   };
 
   handleMovementChange = async (value, index = null, name, type) => {
     switch (type) {
-      case 'edit_existing_movement':
-        let movements = this.state.movements;
-        movements[index][name] = value;
-        await this.setState({
-          movements: movements,
-        });
-        break;
-      case 'add_new_movement':
-        await this.setState({
-          [name]: value,
-        });
-        break;
-      case 'addDescription':
-      case 'addNotes':
-        await this.setState({
-          [name]: value.target.value,
-        });
-        break;
       case 'addTitle':
         await this.setState({
           [name]: value,
@@ -116,7 +110,7 @@ class CreateWorkOut extends Component {
 
   handleSubmit = async () => {
     const data = {
-      workoutComponents: this.state.workoutComponents,
+      workoutComponents: this.state.rawWorkouts,
       date: this.state.date,
       title: this.state.wodTitle,
     };
@@ -129,18 +123,12 @@ class CreateWorkOut extends Component {
     }
 
     this.setState({
-      workoutComponents: [],
-      movements: [],
-      wodTitle: null,
-      movement: null,
-      weight: null,
-      repititions: null,
-      notes: '',
-      description: '',
       date: null,
       newWorkOutComponent: false,
       activePanel: 'wodPanel',
       title: '',
+      rawWorkouts: [],
+      editorState: EditorState.createEmpty(),
     });
   };
 
@@ -178,16 +166,8 @@ class CreateWorkOut extends Component {
             />
           </div>
           <div className="align-left">
-            {this.state.workoutComponents.map((component) => (
-              <div className="padding-1-rem">
-                <span className="bolding">{component.description}</span>
-                {component.movements.map((movement) => (
-                  <div className="normal-text">
-                    {movement.repititions} {movement.movement}
-                    {movement.weight ? <>({movement.weight})</> : null}
-                  </div>
-                ))}
-              </div>
+            {this.state.rawWorkouts.map((workout) => (
+              <DisplayEditor rawContent={JSON.parse(workout)} />
             ))}
           </div>
           <div className="align-left">
@@ -246,144 +226,14 @@ class CreateWorkOut extends Component {
             >
               {this.state.newWorkOutComponent ? (
                 <div>
-                  <div className="comp-title">
-                    <EditableText
-                      placeholder="Title"
-                      value={this.state.title}
-                      onChange={(e) =>
-                        this.handleMovementChange(e, null, 'title', 'addTitle')
-                      }
-                      maxLength={65}
-                    />
-                  </div>
-                  <TextArea
-                    className="bp3-fill"
-                    growVertically={true}
-                    placeholder="Describe workout (Ex. 10 Rounds For Time 20 Minute Cap)"
-                    onChange={(e) =>
-                      this.handleMovementChange(
-                        e,
-                        null,
-                        'description',
-                        'addDescription'
-                      )
-                    }
-                    value={this.state.description}
+                  <RichEditor
+                    editorState={this.state.editorState}
+                    toggleBlockStyle={this.toggleBlockStyle}
+                    toggleInlineStyle={this.toggleInlineStyle}
+                    handleEditorChange={this.handleEditorChange}
                   />
-                  <H4 className="padding-top">Movements</H4>
-                  <table className="bp3-html-table bp3-html-table-condensed table-styles">
-                    <thead>
-                      <tr>
-                        <th>Movement</th>
-                        <th>Weight</th>
-                        <th>Reps</th>
-                        <th>Notes</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.state.movements.map((movement, index) => (
-                        <tr>
-                          <td>
-                            <EditableText
-                              value={movement.movement}
-                              onChange={(e) =>
-                                this.handleMovementChange(
-                                  e,
-                                  index,
-                                  'movement',
-                                  'edit_existing_movement'
-                                )
-                              }
-                            >
-                              {movement.movement}
-                            </EditableText>
-                          </td>
-                          <td>
-                            <EditableText
-                              value={movement.weight}
-                              onChange={(e) =>
-                                this.handleMovementChange(
-                                  e,
-                                  index,
-                                  'weight',
-                                  'edit_existing_movement'
-                                )
-                              }
-                            >
-                              {movement.weight}
-                            </EditableText>
-                          </td>
-                          <td>
-                            <EditableText
-                              value={movement.repititions}
-                              onChange={(e) =>
-                                this.handleMovementChange(
-                                  e,
-                                  index,
-                                  'repititions',
-                                  'edit_existing_movement'
-                                )
-                              }
-                            >
-                              {movement.repititions}
-                            </EditableText>
-                          </td>
-                          <td>
-                            <EditableText
-                              value={movement.notes}
-                              onChange={(e) =>
-                                this.handleMovementChange(
-                                  e,
-                                  index,
-                                  'notes',
-                                  'edit_existing_movement'
-                                )
-                              }
-                            >
-                              {movement.notes}
-                            </EditableText>
-                          </td>
-                        </tr>
-                      ))}
-                      <tr>
-                        <td>
-                          <EditableText
-                            onChange={(e) =>
-                              this.handleMovementChange(
-                                e,
-                                null,
-                                'movement',
-                                'add_new_movement'
-                              )
-                            }
-                            value={this.state.movement}
-                            onConfirm={(value) => {
-                              let movement = Object.create({});
-                              movement.movement = value;
-                              this.setState({
-                                movements: [...this.state.movements, movement],
-                                movement: null,
-                              });
-                            }}
-                          />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <TextArea
-                    className="bp3-fill"
-                    growVertically={true}
-                    placeholder="Notes..."
-                    onChange={(e) =>
-                      this.handleMovementChange(e, null, 'notes', 'addNotes')
-                    }
-                    value={this.state.notes}
-                  />
-                  <Button
-                    className="bp3-minimal"
-                    onClick={this.handleAddComponent}
-                  >
-                    Click To Add Component
+                  <Button intent="primary" onClick={this.handleAddComponent}>
+                    Add to Whiteboard
                   </Button>
                 </div>
               ) : (

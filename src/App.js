@@ -29,15 +29,26 @@ const Container = styled.div`
 
 const SideNav = styled.div`
   background-color: #383e47;
-  width: 10rem;
+  max-width: '151px';
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  transition: max-width 1s;
 `;
 
 class App extends Component {
+  state = {
+    minimizeNav: false,
+  };
+
+  handleToggleMinimize = () => {
+    this.setState({
+      minimizeNav: !this.state.minimizeNav,
+    });
+  };
+
   render() {
     return (
       <AppContainer className="App">
@@ -45,10 +56,13 @@ class App extends Component {
           <NavigationBar
             isAuthenticated={this.props.auth.is_authenticated}
             currentUser={this.props.auth.user}
+            handleToggleMinimize={this.handleToggleMinimize}
           />
         ) : null}
         <Container>
-          <SideNav>
+          <SideNav
+            className={this.state.minimizeNav ? 'side-nav-minimized' : ''}
+          >
             <div
               style={{
                 width: '90%',
@@ -60,27 +74,42 @@ class App extends Component {
               }}
             >
               <Link to="/">
-                <Button className="bp3-minimal grey" icon="home">
-                  Dashboard
-                </Button>
+                <Button
+                  className="bp3-minimal grey nav-margin"
+                  icon="home"
+                  minimal={this.state.minimizeNav}
+                  text={this.state.minimizeNav ? null : 'Dashboard'}
+                />
               </Link>
               <Link to="/workout">
-                <Button className="bp3-minimal grey" icon="new-prescription">
-                  Add Workout
-                </Button>
+                <Button
+                  className="bp3-minimal grey nav-margin"
+                  icon="new-prescription"
+                  minimal={this.state.minimizeNav}
+                  text={this.state.minimizeNav ? null : 'Add Workout'}
+                />
               </Link>
-              <Link to="/">
-                <Button className="bp3-minimal grey" icon="home">
-                  Library
-                </Button>
+              <Link to="/editor">
+                <Button
+                  className="bp3-minimal grey nav-margin"
+                  icon="home"
+                  minimal={this.state.minimizeNav}
+                  text={this.state.minimizeNav ? null : 'Library'}
+                />
               </Link>
-              <Button className="bp3-minimal grey" icon="document">
-                Friend Activity
-              </Button>
+              <Button
+                className="bp3-minimal grey nav-margin"
+                icon="document"
+                minimal={this.state.minimizeNav}
+                text={this.state.minimizeNav ? null : 'Friend Activity'}
+              />
               <Link to="/profile">
-                <Button className="bp3-minimal grey" icon="settings">
-                  Profile
-                </Button>
+                <Button
+                  className="bp3-minimal grey nav-margin"
+                  icon="settings"
+                  minimal={this.state.minimizeNav}
+                  text={this.state.minimizeNav ? null : 'Profile'}
+                />
               </Link>
             </div>
           </SideNav>

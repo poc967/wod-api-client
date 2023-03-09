@@ -1,0 +1,21 @@
+.RichEditor {
+    border: solid lightgray 1px;
+    border-radius: 3px;
+    margin-bottom: 1rem;
+}
+
+.RichEditor-buttonGroup {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.RichEditor-textArea {
+    margin: 20px;
+}
+
+.RichEditor-button-active {
+    color: white;
+    background-color: black;
+}

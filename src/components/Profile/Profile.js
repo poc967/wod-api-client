@@ -6,6 +6,7 @@ import {
   Tabs,
   Tab,
   Icon,
+  IconSize,
   FileInput,
   Button,
 } from '@blueprintjs/core';
@@ -38,7 +39,6 @@ const Profile = (props) => {
   }
 
   function handleSubmitProfilePicture(e) {
-    console.log(e.target.files[0]);
     let data = new FormData();
     data.append('image', e.target.files[0]);
     props.editUser(id, data);
@@ -56,21 +56,24 @@ const Profile = (props) => {
             hidden
             onChange={(e) => handleSubmitProfilePicture(e)}
           />
+          <div className="transparent-overlay">
+            <Icon icon="edit" size="45" />
+          </div>
         </label>
         <div className="profile-name">
           <span>{`${firstName} ${lastName}`}</span>
         </div>
         <div className="profile-analytics">
           <div>
-            <span className="profile-analytics-number">75</span>
+            <span className="profile-analytics-number bp3-skeleton">750</span>
             <span className="profile-analytics-tag">Workouts Completed</span>
           </div>
           <div>
-            <span className="profile-analytics-number">4</span>
+            <span className="profile-analytics-number bp3-skeleton">400</span>
             <span className="profile-analytics-tag">Avg. Workouts / Week</span>
           </div>
           <div>
-            <span className="profile-analytics-number">10</span>
+            <span className="profile-analytics-number bp3-skeleton">100</span>
             <span className="profile-analytics-tag">Friends</span>
           </div>
         </div>

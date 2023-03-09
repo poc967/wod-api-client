@@ -38,25 +38,12 @@ class NavigationBar extends Component {
         <NavbarGroup align={Alignment.LEFT}>
           <NavbarHeading>WOD Tracker</NavbarHeading>
           <NavbarDivider style={{ backgroundColor: 'white' }} />
-          <Icon icon="menu" />
-          {/* <Link to="/">
-            <Button className="bp3-minimal grey" icon="home">
-              Dashboard
-            </Button>
-          </Link>
-          <Link to="/workout">
-            <Button className="bp3-minimal grey" icon="new-prescription">
-              Add Workout
-            </Button>
-          </Link>
-          <Link to="/">
-            <Button className="bp3-minimal grey" icon="home">
-              Library
-            </Button>
-          </Link>
-          <Button className="bp3-minimal grey" icon="document">
-            Friend Activity
-          </Button> */}
+          <Button
+            icon="menu"
+            onClick={() => this.props.handleToggleMinimize()}
+            style={{ color: '#383e47', marginLeft: '5px' }}
+            minimal={true}
+          />
         </NavbarGroup>
         {isAuthenticated ? (
           <NavbarGroup align={Alignment.RIGHT}>

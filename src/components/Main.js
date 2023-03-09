@@ -3,14 +3,9 @@ import styled from 'styled-components';
 import { connect, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getWods } from '../actions/wodActions';
-import { Card, Button, Elevation } from '@blueprintjs/core';
+import { Card, Button, Elevation, Spinner } from '@blueprintjs/core';
+import DisplayEditor from './DisplayEditor/DisplayEditor';
 
-const ButtonContainer = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  justify-content: center;
-`;
 const Wrapper = styled.div`
   padding-top: 1rem;
   width: 60vw;
@@ -22,7 +17,6 @@ const Wrapper = styled.div`
 
 const Title = styled.span`
   font-size: 1.125rem;
-  margin-bottom: 15px;
 `;
 
 const WorkoutBox = styled.div`
@@ -45,10 +39,12 @@ const WorkoutBox = styled.div`
   }
 `;
 
-const Description = styled.div`
-  font-size: 1.125rem;
-  font-weight: bold;
-  color: #4c90f0;
+const TitleWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 15px;
 `;
 
 const calcDate = () => {
@@ -69,28 +65,25 @@ const Main = (props) => {
 
   return (
     <Wrapper>
-      <Title>{calcDate()}</Title>
+      <TitleWrapper>
+        <Button icon="chevron-left" minimal={true} />
+        <Title>{calcDate()}</Title>
+        <Button icon="chevron-right" minimal={true} />
+      </TitleWrapper>
       {props.wods.fetchingWods ? (
-        <div>
-          <span>Loading...</span>
-        </div>
+        <Spinner size="100" intent="success" />
       ) : (
-        props.wods.wods.map((wod) =>
-          wod.work_outs.map((work_out) => (
-            <WorkoutBox>
-              <h1>{work_out.title}</h1>
-              <Description>{work_out.description}</Description>
-              <ul style={{ listStyleType: 'none', padding: '0' }}>
-                {work_out.movements.map((movement) => (
-                  <li>
-                    {movement.repititions} {movement.movement.name}{' '}
-                    {movement.weight ? `(${movement.weight})` : null}
-                  </li>
-                ))}
-              </ul>
-            </WorkoutBox>
-          ))
-        )
+        <div className="bp3-skeleton">
+          {props.wods.wods.map((wod) =>
+            wod.work_outs.map((work_out) => (
+              <WorkoutBox>
+                {work_out.title ? <h1>{work_out.title}</h1> : null}
+                <DisplayEditor rawContent={JSON.parse(work_out.description)} />
+                <Button icon="edit" minimal={true} />
+              </WorkoutBox>
+            ))
+          )}
+        </div>
       )}
     </Wrapper>
   );
